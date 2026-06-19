@@ -140,7 +140,7 @@
   table{
     width: 100%;
     border-collapse: collapse;
-    min-width: 760px;
+    min-width: 880px;
   }
 
   thead th{
@@ -176,7 +176,7 @@
   }
 
   .col-action{ width: 36px; }
-  .col-cat, .col-priority{ width: 150px; }
+  .col-cat, .col-priority, .col-status{ width: 150px; }
 
   select.tag-select{
     font-family: 'IBM Plex Mono', monospace;
@@ -289,6 +289,7 @@
             <th class="col-num">№</th>
             <th class="col-cat">Категория</th>
             <th class="col-priority">Приоритет</th>
+            <th class="col-status">Статус</th>
             <th class="col-text">Текст задачи</th>
             <th class="col-author">Кто создал</th>
             <th class="col-action"></th>
@@ -303,8 +304,9 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script>
-  const CATEGORIES = ["Маркетинг", "Склады"];
+  const CATEGORIES = ["Маркетинг", "Склады", "Поставки", "Отчеты", "Честный знак"];
   const PRIORITIES = ["Срочно", "Важно", "Обычная", "Идея"];
+  const STATUSES = ["Скоро начну", "В работе", "Готово", "Отложено"];
   const FIREBASE_CONFIG = {"apiKey": "AIzaSyCbiW-rv05DdI_Y5a5WtCCyuzA8BgjD6rk", "authDomain": "task-ebb73.firebaseapp.com", "projectId": "task-ebb73", "storageBucket": "task-ebb73.firebasestorage.app", "messagingSenderId": "1031614791847", "appId": "1:1031614791847:web:a4d2c9e0b4299af979db82"};
   const COLLECTION_NAME = "tasks";
   const COLOR_PALETTE = ["var(--red)", "var(--amber)", "var(--sage)", "var(--navy)", "var(--teal)", "var(--plum)"];
@@ -358,6 +360,7 @@
       const tr = document.createElement("tr");
       const catColor = colorFor(CATEGORIES, task.category);
       const prColor = colorFor(PRIORITIES, task.priority);
+      const stColor = colorFor(STATUSES, task.status);
       tr.innerHTML =
         '<td class="col-num">' + String(index + 1).padStart(3, "0") + "</td>" +
         '<td class="col-cat"><select class="tag-select cat-select" data-id="' + task.id + '" style="border-color:' + catColor + ';color:' + catColor + ';">' +
@@ -365,6 +368,9 @@
         "</select></td>" +
         '<td class="col-priority"><select class="tag-select priority-select" data-id="' + task.id + '" style="border-color:' + prColor + ';color:' + prColor + ';">' +
           optionsFor(PRIORITIES, task.priority) +
+        "</select></td>" +
+        '<td class="col-status"><select class="tag-select status-select" data-id="' + task.id + '" style="border-color:' + stColor + ';color:' + stColor + ';">' +
+          optionsFor(STATUSES, task.status) +
         "</select></td>" +
         '<td class="col-text"><textarea class="text-input" data-id="' + task.id + '" rows="1" placeholder="Что нужно сделать?">' + escapeHtml(task.text) + "</textarea></td>" +
         '<td class="col-author"><input type="text" class="author-input" data-id="' + task.id + '" value="' + escapeHtml(task.author) + '" placeholder="Имя"></td>' +
@@ -430,6 +436,17 @@
         updateField(id, "priority", e.target.value);
       });
     });
+    document.querySelectorAll(".status-select").forEach(function(sel){
+      sel.addEventListener("change", function(e){
+        const id = e.target.dataset.id;
+        const task = tasks.find(function(t){ return t.id === id; });
+        if(task){ task.status = e.target.value; }
+        const color = colorFor(STATUSES, e.target.value);
+        e.target.style.borderColor = color;
+        e.target.style.color = color;
+        updateField(id, "status", e.target.value);
+      });
+    });
     document.querySelectorAll(".text-input").forEach(function(inp){
       inp.addEventListener("input", function(e){
         const id = e.target.dataset.id;
@@ -462,6 +479,7 @@
     db.collection(COLLECTION_NAME).add({
       category: CATEGORIES[0],
       priority: PRIORITIES[0],
+      status: STATUSES[0],
       text: "",
       author: "",
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
@@ -498,6 +516,7 @@
           id: doc.id,
           category: data.category || CATEGORIES[0],
           priority: data.priority || PRIORITIES[0],
+          status: data.status || STATUSES[0],
           text: data.text || "",
           author: data.author || ""
         };
