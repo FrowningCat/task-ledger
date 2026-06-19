@@ -140,6 +140,7 @@
   table{
     width: 100%;
     border-collapse: collapse;
+    table-layout: fixed;
     min-width: 880px;
   }
 
@@ -163,20 +164,21 @@
   }
 
   td{
-    padding: 10px 14px;
+    padding: 10px 10px;
     vertical-align: middle;
   }
 
   .col-num{
-    width: 56px;
+    width: 46px;
     font-family: 'IBM Plex Mono', monospace;
     color: var(--ink-muted);
     text-align: center;
     font-size: 0.85rem;
   }
 
-  .col-action{ width: 36px; }
-  .col-cat, .col-priority, .col-status{ width: 150px; }
+  .col-action{ width: 32px; }
+  .col-cat, .col-priority, .col-status{ width: 132px; }
+  .col-author{ width: 116px; }
 
   select.tag-select{
     font-family: 'IBM Plex Mono', monospace;
@@ -188,14 +190,14 @@
     border: 2px dashed var(--navy);
     color: var(--navy);
     border-radius: 999px;
-    padding: 5px 26px 5px 12px;
+    padding: 5px 22px 5px 10px;
     cursor: pointer;
     transform: rotate(-1.5deg);
     appearance: none;
     -webkit-appearance: none;
     background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
                        linear-gradient(135deg, currentColor 50%, transparent 50%);
-    background-position: calc(100% - 16px) center, calc(100% - 11px) center;
+    background-position: calc(100% - 14px) center, calc(100% - 9px) center;
     background-size: 5px 5px, 5px 5px;
     background-repeat: no-repeat;
     max-width: 100%;
@@ -219,7 +221,6 @@
   }
   .author-input{
     width: 100%;
-    min-width: 110px;
     border: none;
     border-bottom: 1px solid var(--rule);
     background: transparent;
