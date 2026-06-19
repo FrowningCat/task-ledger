@@ -141,7 +141,7 @@
     width: 100%;
     border-collapse: collapse;
     table-layout: fixed;
-    min-width: 880px;
+    min-width: 760px;
   }
 
   thead th{
@@ -177,30 +177,34 @@
   }
 
   .col-action{ width: 32px; }
-  .col-cat, .col-priority, .col-status{ width: 132px; }
-  .col-author{ width: 116px; }
+  .col-cat, .col-priority, .col-status{ width: 104px; }
+  .col-author{ width: 84px; }
 
   select.tag-select{
     font-family: 'IBM Plex Mono', monospace;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
-    font-size: 0.78rem;
+    letter-spacing: 0.02em;
+    font-size: 0.68rem;
     font-weight: 500;
     background-color: transparent;
     border: 2px dashed var(--navy);
     color: var(--navy);
     border-radius: 999px;
-    padding: 5px 22px 5px 10px;
+    padding: 5px 18px 5px 8px;
     cursor: pointer;
     transform: rotate(-1.5deg);
     appearance: none;
     -webkit-appearance: none;
     background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
                        linear-gradient(135deg, currentColor 50%, transparent 50%);
-    background-position: calc(100% - 14px) center, calc(100% - 9px) center;
-    background-size: 5px 5px, 5px 5px;
+    background-position: calc(100% - 12px) center, calc(100% - 7px) center;
+    background-size: 4px 4px, 4px 4px;
     background-repeat: no-repeat;
+    width: 100%;
     max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   select.tag-select:focus-visible{ outline: 2px solid var(--ink); outline-offset: 2px; }
 
@@ -305,7 +309,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script>
-  const CATEGORIES = ["Маркетинг", "Склады", "Поставки", "Отчеты", "Честный знак", "Контент"];
+  const CATEGORIES = ["Продвижение", "Поставки", "Отчеты", "Честный знак", "Контент"];
   const PRIORITIES = ["Срочно", "Важно", "Обычная", "Идея"];
   const STATUSES = ["Скоро начну", "В работе", "Готово", "Отложено"];
   const FIREBASE_CONFIG = {"apiKey": "AIzaSyCbiW-rv05DdI_Y5a5WtCCyuzA8BgjD6rk", "authDomain": "task-ebb73.firebaseapp.com", "projectId": "task-ebb73", "storageBucket": "task-ebb73.firebasestorage.app", "messagingSenderId": "1031614791847", "appId": "1:1031614791847:web:a4d2c9e0b4299af979db82"};
