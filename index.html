@@ -254,6 +254,84 @@
   .del-btn:hover{ color: var(--red); }
   .del-btn:focus-visible{ outline: 2px solid var(--ink); outline-offset: 2px; }
 
+  .done-counter{
+    font-family: 'IBM Plex Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.72rem;
+    color: var(--ink-muted);
+    margin: 0 0 6px;
+  }
+  .done-counter strong{
+    font-size: 1rem;
+    color: var(--sage);
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+
+  .tabs{
+    display: flex;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+  .tab-btn{
+    font-family: 'IBM Plex Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--ink-muted);
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 8px 4px;
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+  .tab-btn:hover{ color: var(--ink); }
+  .tab-btn.is-active{
+    color: var(--ink);
+    border-bottom-color: var(--sage);
+  }
+  .tab-btn .tab-count{
+    font-family: 'IBM Plex Mono', monospace;
+    color: var(--sage);
+  }
+
+  .view{ display: none; }
+  .view.is-active{ display: block; }
+
+  .tag-badge{
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    font-size: 0.68rem;
+    font-weight: 500;
+    border: 2px dashed var(--navy);
+    color: var(--navy);
+    border-radius: 999px;
+    padding: 5px 12px;
+    transform: rotate(-1.5deg);
+    white-space: nowrap;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .col-completed{ width: 150px; }
+  td.col-text-static{
+    font-size: 0.92rem;
+    line-height: 1.45;
+    color: var(--ink);
+    white-space: pre-wrap;
+  }
+  td.col-completed{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--ink-muted);
+  }
+
   .empty-state{
     margin: 0;
     padding: 36px 16px;
@@ -281,28 +359,57 @@
       <button id="addTaskBtn" class="stamp-btn" type="button">+ Создать задачу</button>
     </header>
 
+    <p class="done-counter">Выполнено задач: <strong id="doneCounter">0</strong></p>
+
     <div id="configWarning" class="notice">
       <strong>Firebase не настроен.</strong> Откройте <code>generate_task_manager.py</code>,
       вставьте свои данные в <code>FIREBASE_CONFIG</code> и запустите скрипт снова.
     </div>
     <p id="syncStatus" class="sync-status">Подключение…</p>
 
-    <main class="ledger-card">
-      <table>
-        <thead>
-          <tr>
-            <th class="col-num">№</th>
-            <th class="col-cat">Категория</th>
-            <th class="col-priority">Приоритет</th>
-            <th class="col-status">Статус</th>
-            <th class="col-text">Текст задачи</th>
-            <th class="col-author">Кто создал</th>
-            <th class="col-action"></th>
-          </tr>
-        </thead>
-        <tbody id="ledgerBody"></tbody>
-      </table>
-      <p id="emptyState" class="empty-state">Пока нет ни одной записи. Нажмите «Создать задачу», чтобы открыть новую строку.</p>
+    <div class="tabs">
+      <button class="tab-btn is-active" data-view="active" type="button">Активные задачи</button>
+      <button class="tab-btn" data-view="history" type="button">Выполненные <span class="tab-count">(<span id="tabDoneCount">0</span>)</span></button>
+    </div>
+
+    <main id="activeView" class="view is-active">
+      <div class="ledger-card">
+        <table>
+          <thead>
+            <tr>
+              <th class="col-num">№</th>
+              <th class="col-cat">Категория</th>
+              <th class="col-priority">Приоритет</th>
+              <th class="col-status">Статус</th>
+              <th class="col-text">Текст задачи</th>
+              <th class="col-author">Кто создал</th>
+              <th class="col-action"></th>
+            </tr>
+          </thead>
+          <tbody id="ledgerBody"></tbody>
+        </table>
+        <p id="emptyState" class="empty-state">Пока нет ни одной записи. Нажмите «Создать задачу», чтобы открыть новую строку.</p>
+      </div>
+    </main>
+
+    <main id="historyView" class="view">
+      <div class="ledger-card">
+        <table>
+          <thead>
+            <tr>
+              <th class="col-num">№</th>
+              <th class="col-cat">Категория</th>
+              <th class="col-priority">Приоритет</th>
+              <th class="col-status">Статус</th>
+              <th class="col-text">Текст задачи</th>
+              <th class="col-author">Кто создал</th>
+              <th class="col-completed">Завершено</th>
+            </tr>
+          </thead>
+          <tbody id="historyBody"></tbody>
+        </table>
+        <p id="emptyHistoryState" class="empty-state">Пока нет выполненных задач.</p>
+      </div>
     </main>
   </div>
 
@@ -314,9 +421,11 @@
   const STATUSES = ["Скоро начну", "В работе", "Готово", "Отложено"];
   const FIREBASE_CONFIG = {"apiKey": "AIzaSyCbiW-rv05DdI_Y5a5WtCCyuzA8BgjD6rk", "authDomain": "task-ebb73.firebaseapp.com", "projectId": "task-ebb73", "storageBucket": "task-ebb73.firebasestorage.app", "messagingSenderId": "1031614791847", "appId": "1:1031614791847:web:a4d2c9e0b4299af979db82"};
   const COLLECTION_NAME = "tasks";
+  const HISTORY_COLLECTION_NAME = "completed_tasks";
   const COLOR_PALETTE = ["var(--red)", "var(--amber)", "var(--sage)", "var(--navy)", "var(--teal)", "var(--plum)"];
 
   let tasks = [];
+  let completedTasks = [];
   let db = null;
   let pendingFocusId = null;
   const pendingWrites = {};
@@ -355,6 +464,34 @@
     return !FIREBASE_CONFIG.apiKey || FIREBASE_CONFIG.apiKey.indexOf("ВАШ_") === 0;
   }
 
+  function formatTimestamp(ts){
+    if(!ts || !ts.toDate){ return "—"; }
+    const d = ts.toDate();
+    const pad = function(n){ return String(n).padStart(2, "0"); };
+    return pad(d.getDate()) + "." + pad(d.getMonth() + 1) + "." + d.getFullYear() +
+      " " + pad(d.getHours()) + ":" + pad(d.getMinutes());
+  }
+
+  function updateDoneCounter(){
+    const count = completedTasks.length;
+    document.getElementById("doneCounter").textContent = count;
+    document.getElementById("tabDoneCount").textContent = count;
+  }
+
+  function switchView(view){
+    document.querySelectorAll(".tab-btn").forEach(function(btn){
+      btn.classList.toggle("is-active", btn.dataset.view === view);
+    });
+    document.getElementById("activeView").classList.toggle("is-active", view === "active");
+    document.getElementById("historyView").classList.toggle("is-active", view === "history");
+  }
+
+  document.querySelectorAll(".tab-btn").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      switchView(btn.dataset.view);
+    });
+  });
+
   function render(){
     const body = document.getElementById("ledgerBody");
     const empty = document.getElementById("emptyState");
@@ -379,7 +516,7 @@
         "</select></td>" +
         '<td class="col-text"><textarea class="text-input" data-id="' + task.id + '" rows="1" placeholder="Что нужно сделать?">' + escapeHtml(task.text) + "</textarea></td>" +
         '<td class="col-author"><input type="text" class="author-input" data-id="' + task.id + '" value="' + escapeHtml(task.author) + '" placeholder="Имя"></td>' +
-        '<td class="col-action"><button class="del-btn" data-id="' + task.id + '" type="button" title="Удалить">✕</button></td>';
+        '<td class="col-action"><button class="del-btn" data-id="' + task.id + '" type="button" title="Завершить (перенести в историю)">✕</button></td>';
       body.appendChild(tr);
     });
 
@@ -391,6 +528,29 @@
       if(el){ el.focus(); }
       pendingFocusId = null;
     }
+  }
+
+  function renderHistory(){
+    const body = document.getElementById("historyBody");
+    const empty = document.getElementById("emptyHistoryState");
+    body.innerHTML = "";
+    empty.style.display = completedTasks.length ? "none" : "block";
+
+    completedTasks.forEach(function(task, index){
+      const tr = document.createElement("tr");
+      const catColor = colorFor(CATEGORIES, task.category);
+      const prColor = colorFor(PRIORITIES, task.priority);
+      const stColor = colorFor(STATUSES, task.status);
+      tr.innerHTML =
+        '<td class="col-num">' + String(index + 1).padStart(3, "0") + "</td>" +
+        '<td class="col-cat"><span class="tag-badge" style="border-color:' + catColor + ';color:' + catColor + ';">' + escapeHtml(task.category) + "</span></td>" +
+        '<td class="col-priority"><span class="tag-badge" style="border-color:' + prColor + ';color:' + prColor + ';">' + escapeHtml(task.priority) + "</span></td>" +
+        '<td class="col-status"><span class="tag-badge" style="border-color:' + stColor + ';color:' + stColor + ';">' + escapeHtml(task.status) + "</span></td>" +
+        '<td class="col-text col-text-static">' + escapeHtml(task.text) + "</td>" +
+        '<td class="col-author">' + escapeHtml(task.author) + "</td>" +
+        '<td class="col-completed">' + formatTimestamp(task.completedAt) + "</td>";
+      body.appendChild(tr);
+    });
   }
 
   function updateField(id, field, value){
@@ -411,10 +571,21 @@
     }, 500);
   }
 
-  function deleteTask(id){
+  function completeTask(id){
     if(!db){ return; }
-    db.collection(COLLECTION_NAME).doc(id).delete().catch(function(e){
-      console.error("Не удалось удалить:", e);
+    const task = tasks.find(function(t){ return t.id === id; });
+    if(!task){ return; }
+    db.collection(HISTORY_COLLECTION_NAME).add({
+      category: task.category,
+      priority: task.priority,
+      status: task.status,
+      text: task.text,
+      author: task.author,
+      completedAt: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(function(){
+      return db.collection(COLLECTION_NAME).doc(id).delete();
+    }).catch(function(e){
+      console.error("Не удалось завершить задачу:", e);
     });
   }
 
@@ -471,7 +642,7 @@
     });
     document.querySelectorAll(".del-btn").forEach(function(btn){
       btn.addEventListener("click", function(e){
-        deleteTask(e.target.dataset.id);
+        completeTask(e.target.dataset.id);
       });
     });
   }
@@ -504,6 +675,8 @@
       document.getElementById("configWarning").style.display = "block";
       setSyncStatus("Не настроено", "is-error");
       render();
+      renderHistory();
+      updateDoneCounter();
       return;
     }
     try{
@@ -534,6 +707,25 @@
     }, function(error){
       console.error("Firestore sync error:", error);
       setSyncStatus("Нет доступа — проверьте правила Firestore (Rules)", "is-error");
+    });
+
+    db.collection(HISTORY_COLLECTION_NAME).orderBy("completedAt", "desc").onSnapshot(function(snapshot){
+      completedTasks = snapshot.docs.map(function(doc){
+        const data = doc.data();
+        return {
+          id: doc.id,
+          category: data.category || CATEGORIES[0],
+          priority: data.priority || PRIORITIES[0],
+          status: data.status || STATUSES[0],
+          text: data.text || "",
+          author: data.author || "",
+          completedAt: data.completedAt || null
+        };
+      });
+      updateDoneCounter();
+      renderHistory();
+    }, function(error){
+      console.error("Firestore history sync error:", error);
     });
   }
 
