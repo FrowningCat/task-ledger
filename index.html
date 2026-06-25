@@ -39,10 +39,17 @@
     min-height: 100vh;
   }
 
+  /* ── Основной контейнер: 85% экрана, прокрутка внутри ── */
   .page{
-    max-width: 1120px;
+    width: 85vw;
+    height: 85vh;
     margin: 0 auto;
-    padding: 48px 24px 80px;
+    padding: 32px 28px 28px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    top: 50%;
+    transform: translateY(-0%);
   }
 
   .masthead{
@@ -53,7 +60,8 @@
     flex-wrap: wrap;
     border-bottom: 2px solid var(--ink);
     padding-bottom: 18px;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
+    flex-shrink: 0;
   }
 
   .eyebrow{
@@ -69,7 +77,7 @@
     font-family: 'Fraunces', serif;
     font-style: italic;
     font-weight: 600;
-    font-size: clamp(1.9rem, 4vw, 2.6rem);
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
     margin: 0;
     color: var(--ink);
   }
@@ -87,20 +95,14 @@
     padding: 10px 18px;
     cursor: pointer;
     transform: rotate(-2deg);
-    transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
+    transition: transform 0.15s ease, background 0.15s ease;
     white-space: nowrap;
   }
-  .stamp-btn:hover{
-    transform: rotate(0deg);
-    background: rgba(182, 64, 46, 0.08);
-  }
-  .stamp-btn:focus-visible{
-    outline: 2px solid var(--ink);
-    outline-offset: 3px;
-  }
+  .stamp-btn:hover{ transform: rotate(0deg); background: rgba(182,64,46,0.08); }
+  .stamp-btn:focus-visible{ outline: 2px solid var(--ink); outline-offset: 3px; }
 
   .notice{
-    margin: 0 0 16px;
+    margin: 0 0 12px;
     padding: 12px 16px;
     border: 2px dashed var(--amber);
     border-radius: 6px;
@@ -109,6 +111,7 @@
     font-size: 0.88rem;
     line-height: 1.5;
     display: none;
+    flex-shrink: 0;
   }
   .notice strong{ color: var(--amber); }
   .notice code{
@@ -118,90 +121,208 @@
     border-radius: 3px;
   }
 
+  .toolbar{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+    margin-bottom: 10px;
+  }
+
   .sync-status{
     font-family: 'IBM Plex Mono', monospace;
     font-size: 0.72rem;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--ink-muted);
-    margin: 0 0 14px;
+    margin: 0;
   }
   .sync-status.is-error{ color: var(--red); }
   .sync-status.is-ok{ color: var(--sage); }
 
-  .ledger-card{
+  .done-counter{
+    font-family: 'IBM Plex Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.72rem;
+    color: var(--ink-muted);
+    margin: 0;
+  }
+  .done-counter strong{
+    font-size: 0.95rem;
+    color: var(--sage);
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+
+  /* ── Вкладки + фильтры ── */
+  .tabs-row{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+    margin-bottom: 10px;
+    border-bottom: 1px solid var(--rule-soft);
+    padding-bottom: 10px;
+  }
+
+  .tab-btn{
+    font-family: 'IBM Plex Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--ink-muted);
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 6px 4px;
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .tab-btn:hover{ color: var(--ink); }
+  .tab-btn.is-active{ color: var(--ink); border-bottom-color: var(--sage); }
+  .tab-btn .tab-count{ color: var(--sage); }
+
+  .sep{ width: 1px; height: 20px; background: var(--rule); flex-shrink: 0; }
+
+  .filter-select{
+    font-family: 'IBM Plex Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 0.68rem;
+    font-weight: 500;
+    background: transparent;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    color: var(--ink-muted);
+    padding: 4px 24px 4px 8px;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
+                       linear-gradient(135deg, currentColor 50%, transparent 50%);
+    background-position: calc(100% - 10px) center, calc(100% - 5px) center;
+    background-size: 4px 4px, 4px 4px;
+    background-repeat: no-repeat;
+  }
+  .filter-select:focus-visible{ outline: 2px solid var(--ink); outline-offset: 2px; }
+
+  /* ── Статистика (только на вкладке Выполненные) ── */
+  .stats-row{
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+    margin-bottom: 10px;
+  }
+  .stat-box{
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 10px 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    min-width: 90px;
+  }
+  .stat-box .stat-num{
+    font-family: 'Fraunces', serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--sage);
+    line-height: 1;
+  }
+  .stat-box .stat-label{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-muted);
+  }
+
+  /* ── Белая карточка с прокруткой ── */
+  .ledger-wrap{
+    flex: 1;
+    overflow: auto;
     background: var(--card);
     border: 1px solid var(--rule);
     border-radius: 6px;
     box-shadow: 0 1px 0 var(--rule-soft), 0 12px 28px rgba(33,48,61,0.06);
-    overflow-x: auto;
   }
+
+  .view{ display: none; }
+  .view.is-active{ display: contents; }
 
   table{
     width: 100%;
     border-collapse: collapse;
     table-layout: fixed;
-    min-width: 760px;
+    min-width: 980px;
   }
 
   thead th{
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: var(--card);
     text-align: left;
     font-family: 'IBM Plex Mono', monospace;
     text-transform: uppercase;
     letter-spacing: 0.07em;
-    font-size: 0.72rem;
+    font-size: 0.68rem;
     color: var(--ink-muted);
     border-bottom: 2px solid var(--ink);
-    padding: 14px 14px;
+    padding: 12px 10px;
     font-weight: 500;
   }
 
-  tbody tr{
-    border-bottom: 1px dashed var(--rule);
-  }
-  tbody tr:nth-child(even){
-    background: rgba(33,48,61,0.02);
-  }
+  tbody tr{ border-bottom: 1px dashed var(--rule); }
+  tbody tr:nth-child(even){ background: rgba(33,48,61,0.02); }
 
   td{
-    padding: 10px 10px;
+    padding: 8px 10px;
     vertical-align: middle;
   }
 
   .col-num{
-    width: 46px;
+    width: 42px;
     font-family: 'IBM Plex Mono', monospace;
     color: var(--ink-muted);
     text-align: center;
-    font-size: 0.85rem;
+    font-size: 0.82rem;
   }
-
-  .col-action{ width: 32px; }
-  .col-cat, .col-priority, .col-status{ width: 130px; }
-  .col-author{ width: 100px; }
+  .col-action{ width: 30px; }
+  .col-cat, .col-priority, .col-status{ width: 120px; }
+  .col-author{ width: 110px; }
+  .col-date{ width: 90px; }
+  .col-deadline{ width: 110px; }
+  .col-completed{ width: 110px; }
 
   select.tag-select{
     font-family: 'IBM Plex Mono', monospace;
     text-transform: uppercase;
     letter-spacing: 0.02em;
-    font-size: 0.68rem;
+    font-size: 0.65rem;
     font-weight: 500;
     background-color: transparent;
     border: 2px dashed var(--navy);
     color: var(--navy);
     border-radius: 999px;
-    padding: 5px 18px 5px 8px;
+    padding: 4px 18px 4px 8px;
     cursor: pointer;
     transform: rotate(-1.5deg);
     appearance: none;
     -webkit-appearance: none;
     background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
                        linear-gradient(135deg, currentColor 50%, transparent 50%);
-    background-position: calc(100% - 12px) center, calc(100% - 7px) center;
+    background-position: calc(100% - 10px) center, calc(100% - 5px) center;
     background-size: 4px 4px, 4px 4px;
     background-repeat: no-repeat;
     width: 100%;
-    max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -215,29 +336,38 @@
     border-bottom: 1px solid var(--rule);
     background: transparent;
     font-family: 'Inter', sans-serif;
-    font-size: 0.92rem;
+    font-size: 0.88rem;
     line-height: 1.45;
     color: var(--ink);
-    padding: 6px 4px;
+    padding: 4px 4px;
     resize: none;
     overflow: hidden;
-    min-height: 36px;
+    min-height: 32px;
   }
-  .author-input{
+  .text-input:focus{
+    outline: none;
+    border-bottom: 1px solid var(--ink);
+  }
+  .text-input::placeholder{
+    color: var(--ink-muted);
+    opacity: 0.6;
+  }
+
+  .deadline-input{
     width: 100%;
     border: none;
     border-bottom: 1px solid var(--rule);
     background: transparent;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.92rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
     color: var(--ink);
-    padding: 6px 4px;
+    padding: 4px 4px;
   }
-  .text-input:focus, .author-input:focus{
+  .deadline-input:focus{
     outline: none;
     border-bottom: 1px solid var(--ink);
   }
-  .text-input::placeholder, .author-input::placeholder{
+  .deadline-input::placeholder{
     color: var(--ink-muted);
     opacity: 0.6;
   }
@@ -254,64 +384,17 @@
   .del-btn:hover{ color: var(--red); }
   .del-btn:focus-visible{ outline: 2px solid var(--ink); outline-offset: 2px; }
 
-  .done-counter{
-    font-family: 'IBM Plex Mono', monospace;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    font-size: 0.72rem;
-    color: var(--ink-muted);
-    margin: 0 0 6px;
-  }
-  .done-counter strong{
-    font-size: 1rem;
-    color: var(--sage);
-    font-weight: 600;
-    letter-spacing: 0;
-  }
-
-  .tabs{
-    display: flex;
-    gap: 6px;
-    margin-bottom: 16px;
-  }
-  .tab-btn{
-    font-family: 'IBM Plex Mono', monospace;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    font-size: 0.78rem;
-    font-weight: 500;
-    color: var(--ink-muted);
-    background: transparent;
-    border: none;
-    border-bottom: 2px solid transparent;
-    padding: 8px 4px;
-    cursor: pointer;
-    transition: color 0.15s ease, border-color 0.15s ease;
-  }
-  .tab-btn:hover{ color: var(--ink); }
-  .tab-btn.is-active{
-    color: var(--ink);
-    border-bottom-color: var(--sage);
-  }
-  .tab-btn .tab-count{
-    font-family: 'IBM Plex Mono', monospace;
-    color: var(--sage);
-  }
-
-  .view{ display: none; }
-  .view.is-active{ display: block; }
-
   .tag-badge{
     display: inline-block;
     font-family: 'IBM Plex Mono', monospace;
     text-transform: uppercase;
     letter-spacing: 0.02em;
-    font-size: 0.68rem;
+    font-size: 0.65rem;
     font-weight: 500;
     border: 2px dashed var(--navy);
     color: var(--navy);
     border-radius: 999px;
-    padding: 5px 12px;
+    padding: 4px 10px;
     transform: rotate(-1.5deg);
     white-space: nowrap;
     max-width: 100%;
@@ -319,16 +402,15 @@
     text-overflow: ellipsis;
   }
 
-  .col-completed{ width: 150px; }
   td.col-text-static{
-    font-size: 0.92rem;
+    font-size: 0.88rem;
     line-height: 1.45;
     color: var(--ink);
     white-space: pre-wrap;
   }
-  td.col-completed{
+  td.col-date-cell, td.col-completed{
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.78rem;
+    font-size: 0.72rem;
     color: var(--ink-muted);
   }
 
@@ -343,86 +425,115 @@
   @media (prefers-reduced-motion: reduce){
     .stamp-btn{ transition: none; }
   }
-
-  @media (max-width: 560px){
-    .masthead{ align-items: flex-start; }
-  }
 </style>
 </head>
 <body>
-  <div class="page">
-    <header class="masthead">
-      <div>
-        <p class="eyebrow">Канцелярская книга №1</p>
-        <h1>Журнал задач</h1>
-      </div>
-      <button id="addTaskBtn" class="stamp-btn" type="button">+ Создать задачу</button>
-    </header>
+<div class="page">
 
-    <p class="done-counter">Выполнено задач: <strong id="doneCounter">0</strong></p>
-
-    <div id="configWarning" class="notice">
-      <strong>Firebase не настроен.</strong> Откройте <code>generate_task_manager.py</code>,
-      вставьте свои данные в <code>FIREBASE_CONFIG</code> и запустите скрипт снова.
+  <header class="masthead">
+    <div>
+      <p class="eyebrow">Канцелярская книга №1</p>
+      <h1>Журнал задач</h1>
     </div>
-    <p id="syncStatus" class="sync-status">Подключение…</p>
+    <button id="addTaskBtn" class="stamp-btn" type="button">+ Создать задачу</button>
+  </header>
 
-    <div class="tabs">
-      <button class="tab-btn is-active" data-view="active" type="button">Активные задачи</button>
-      <button class="tab-btn" data-view="history" type="button">Выполненные <span class="tab-count">(<span id="tabDoneCount">0</span>)</span></button>
-    </div>
-
-    <main id="activeView" class="view is-active">
-      <div class="ledger-card">
-        <table>
-          <thead>
-            <tr>
-              <th class="col-num">№</th>
-              <th class="col-cat">Категория</th>
-              <th class="col-priority">Приоритет</th>
-              <th class="col-status">Статус</th>
-              <th class="col-text">Текст задачи</th>
-              <th class="col-author">Кто создал</th>
-              <th class="col-action"></th>
-            </tr>
-          </thead>
-          <tbody id="ledgerBody"></tbody>
-        </table>
-        <p id="emptyState" class="empty-state">Пока нет ни одной записи. Нажмите «Создать задачу», чтобы открыть новую строку.</p>
-      </div>
-    </main>
-
-    <main id="historyView" class="view">
-      <div class="ledger-card">
-        <table>
-          <thead>
-            <tr>
-              <th class="col-num">№</th>
-              <th class="col-cat">Категория</th>
-              <th class="col-priority">Приоритет</th>
-              <th class="col-status">Статус</th>
-              <th class="col-text">Текст задачи</th>
-              <th class="col-author">Кто создал</th>
-              <th class="col-completed">Завершено</th>
-            </tr>
-          </thead>
-          <tbody id="historyBody"></tbody>
-        </table>
-        <p id="emptyHistoryState" class="empty-state">Пока нет выполненных задач.</p>
-      </div>
-    </main>
+  <div id="configWarning" class="notice">
+    <strong>Firebase не настроен.</strong> Откройте <code>generate_task_manager.py</code>,
+    вставьте свои данные в <code>FIREBASE_CONFIG</code> и запустите скрипт снова.
   </div>
+
+  <div class="toolbar">
+    <p id="syncStatus" class="sync-status">Подключение…</p>
+    <p class="done-counter">Выполнено: <strong id="doneCounter">0</strong></p>
+  </div>
+
+  <!-- Вкладки + фильтры истории -->
+  <div class="tabs-row">
+    <button class="tab-btn is-active" data-view="active" type="button">Активные</button>
+    <button class="tab-btn" data-view="history" type="button">
+      Выполненные <span class="tab-count">(<span id="tabDoneCount">0</span>)</span>
+    </button>
+    <span class="sep"></span>
+    <!-- фильтры видны только на вкладке истории -->
+    <span id="historyFilters" style="display:none;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+      <select id="filterAuthor" class="filter-select">
+        <option value="">Все авторы</option>
+      </select>
+      <select id="filterCat" class="filter-select">
+        <option value="">Все категории</option>
+      </select>
+    </span>
+  </div>
+
+  <!-- Статистика (только история) -->
+  <div id="statsRow" class="stats-row" style="display:none;">
+    <div class="stat-box"><span class="stat-num" id="statToday">0</span><span class="stat-label">Сегодня</span></div>
+    <div class="stat-box"><span class="stat-num" id="statWeek">0</span><span class="stat-label">За неделю</span></div>
+    <div class="stat-box"><span class="stat-num" id="statMonth">0</span><span class="stat-label">За месяц</span></div>
+  </div>
+
+  <!-- Прокручиваемая белая зона -->
+  <div class="ledger-wrap">
+
+    <!-- ── АКТИВНЫЕ ЗАДАЧИ ── -->
+    <div id="activeView" class="view is-active">
+      <table>
+        <thead>
+          <tr>
+            <th class="col-num">№</th>
+            <th class="col-date">Создано</th>
+            <th class="col-cat">Категория</th>
+            <th class="col-priority">Приоритет</th>
+            <th class="col-status">Статус</th>
+            <th class="col-text">Текст задачи</th>
+            <th class="col-text">Результат</th>
+            <th class="col-deadline">Сроки</th>
+            <th class="col-author">Кто создал</th>
+            <th class="col-action"></th>
+          </tr>
+        </thead>
+        <tbody id="ledgerBody"></tbody>
+      </table>
+      <p id="emptyState" class="empty-state">Пока нет ни одной записи. Нажмите «Создать задачу».</p>
+    </div>
+
+    <!-- ── ВЫПОЛНЕННЫЕ ── -->
+    <div id="historyView" class="view">
+      <table>
+        <thead>
+          <tr>
+            <th class="col-num">№</th>
+            <th class="col-date">Создано</th>
+            <th class="col-cat">Категория</th>
+            <th class="col-priority">Приоритет</th>
+            <th class="col-status">Статус</th>
+            <th class="col-text">Текст задачи</th>
+            <th class="col-text">Результат</th>
+            <th class="col-deadline">Сроки</th>
+            <th class="col-author">Кто создал</th>
+            <th class="col-completed">Завершено</th>
+          </tr>
+        </thead>
+        <tbody id="historyBody"></tbody>
+      </table>
+      <p id="emptyHistoryState" class="empty-state">Пока нет выполненных задач.</p>
+    </div>
+
+  </div><!-- /ledger-wrap -->
+</div><!-- /page -->
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script>
-  const CATEGORIES = ["Продвижение", "Поставки", "Отчеты", "Честный знак", "Контент", "Отзывы"];
-  const PRIORITIES = ["Срочно", "Важно", "Обычная", "Идея"];
-  const STATUSES = ["Скоро начну", "В работе", "Готово", "Отложено"];
+  const CATEGORIES = ["Продвижение", "Поставки", "Отчеты", "Честный знак", "Контент", "Отзывы", "Возвраты"];
+  const PRIORITIES  = ["Срочно", "Важно", "Обычная", "Идея"];
+  const STATUSES    = ["Скоро начну", "В работе", "Готово", "Отложено"];
+  const AUTHORS     = ["Влад", "Милана", "Алла", "Марина", "Имам", "Ира", "Анна", "Вика", "Александр", "Александра"];
   const FIREBASE_CONFIG = {"apiKey": "AIzaSyCbiW-rv05DdI_Y5a5WtCCyuzA8BgjD6rk", "authDomain": "task-ebb73.firebaseapp.com", "projectId": "task-ebb73", "storageBucket": "task-ebb73.firebasestorage.app", "messagingSenderId": "1031614791847", "appId": "1:1031614791847:web:a4d2c9e0b4299af979db82"};
-  const COLLECTION_NAME = "tasks";
+  const COLLECTION_NAME         = "tasks";
   const HISTORY_COLLECTION_NAME = "completed_tasks";
-  const COLOR_PALETTE = ["var(--red)", "var(--amber)", "var(--sage)", "var(--navy)", "var(--teal)", "var(--plum)"];
+  const COLOR_PALETTE = ["var(--red)","var(--amber)","var(--sage)","var(--navy)","var(--teal)","var(--plum)"];
 
   let tasks = [];
   let completedTasks = [];
@@ -430,70 +541,122 @@
   let pendingFocusId = null;
   const pendingWrites = {};
 
+  // ── helpers ──────────────────────────────────────────────────────────────
   function colorFor(list, value){
     const idx = list.indexOf(value);
-    const safeIdx = idx === -1 ? 0 : idx;
-    return COLOR_PALETTE[safeIdx % COLOR_PALETTE.length];
+    return COLOR_PALETTE[(idx === -1 ? 0 : idx) % COLOR_PALETTE.length];
   }
-
   function autoGrow(el){
     el.style.height = "auto";
     el.style.height = el.scrollHeight + "px";
   }
-
   function escapeHtml(str){
     const div = document.createElement("div");
     div.textContent = str || "";
     return div.innerHTML;
   }
-
   function optionsFor(list, selected){
     return list.map(function(c){
-      return '<option value="' + c + '" ' + (c === selected ? "selected" : "") + ">" + c + "</option>";
+      return '<option value="' + c + '"' + (c === selected ? ' selected' : '') + '>' + c + '</option>';
     }).join("");
   }
-
   function setSyncStatus(text, state){
     const el = document.getElementById("syncStatus");
     el.textContent = text;
-    el.classList.remove("is-ok", "is-error");
-    if(state){ el.classList.add(state); }
+    el.classList.remove("is-ok","is-error");
+    if(state) el.classList.add(state);
   }
-
   function isPlaceholderConfig(){
     return !FIREBASE_CONFIG.apiKey || FIREBASE_CONFIG.apiKey.indexOf("ВАШ_") === 0;
   }
-
-  function formatTimestamp(ts){
-    if(!ts || !ts.toDate){ return "—"; }
+  function formatDate(ts){
+    if(!ts || !ts.toDate) return "—";
     const d = ts.toDate();
-    const pad = function(n){ return String(n).padStart(2, "0"); };
-    return pad(d.getDate()) + "." + pad(d.getMonth() + 1) + "." + d.getFullYear() +
-      " " + pad(d.getHours()) + ":" + pad(d.getMinutes());
+    const p = function(n){ return String(n).padStart(2,"0"); };
+    return p(d.getDate()) + "." + p(d.getMonth()+1) + "." + String(d.getFullYear()).slice(2);
   }
-
+  function formatTimestamp(ts){
+    if(!ts || !ts.toDate) return "—";
+    const d = ts.toDate();
+    const p = function(n){ return String(n).padStart(2,"0"); };
+    return p(d.getDate()) + "." + p(d.getMonth()+1) + "." + d.getFullYear()
+         + " " + p(d.getHours()) + ":" + p(d.getMinutes());
+  }
   function updateDoneCounter(){
     const count = completedTasks.length;
     document.getElementById("doneCounter").textContent = count;
     document.getElementById("tabDoneCount").textContent = count;
   }
 
+  // ── stats ─────────────────────────────────────────────────────────────────
+  function updateStats(list){
+    const now  = new Date();
+    const d0   = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const w0   = new Date(d0); w0.setDate(d0.getDate() - 6);
+    const m0   = new Date(now.getFullYear(), now.getMonth(), 1);
+    let today = 0, week = 0, month = 0;
+    list.forEach(function(t){
+      if(!t.completedAt || !t.completedAt.toDate) return;
+      const dd = t.completedAt.toDate();
+      if(dd >= d0)   today++;
+      if(dd >= w0)   week++;
+      if(dd >= m0)   month++;
+    });
+    document.getElementById("statToday").textContent = today;
+    document.getElementById("statWeek").textContent  = week;
+    document.getElementById("statMonth").textContent = month;
+  }
+
+  // ── filters ───────────────────────────────────────────────────────────────
+  function populateFilters(){
+    const fa = document.getElementById("filterAuthor");
+    const fc = document.getElementById("filterCat");
+    // сохраняем выбранное
+    const selA = fa.value, selC = fc.value;
+    fa.innerHTML = '<option value="">Все авторы</option>';
+    fc.innerHTML = '<option value="">Все категории</option>';
+    AUTHORS.forEach(function(a){
+      const o = document.createElement("option");
+      o.value = a; o.textContent = a;
+      if(a === selA) o.selected = true;
+      fa.appendChild(o);
+    });
+    CATEGORIES.forEach(function(c){
+      const o = document.createElement("option");
+      o.value = c; o.textContent = c;
+      if(c === selC) o.selected = true;
+      fc.appendChild(o);
+    });
+  }
+
+  function filteredHistory(){
+    const a = document.getElementById("filterAuthor").value;
+    const c = document.getElementById("filterCat").value;
+    return completedTasks.filter(function(t){
+      return (!a || t.author === a) && (!c || t.category === c);
+    });
+  }
+
+  // ── tabs / views ──────────────────────────────────────────────────────────
   function switchView(view){
     document.querySelectorAll(".tab-btn").forEach(function(btn){
       btn.classList.toggle("is-active", btn.dataset.view === view);
     });
     document.getElementById("activeView").classList.toggle("is-active", view === "active");
     document.getElementById("historyView").classList.toggle("is-active", view === "history");
+    document.getElementById("historyFilters").style.display = view === "history" ? "flex" : "none";
+    document.getElementById("statsRow").style.display       = view === "history" ? "flex" : "none";
   }
 
   document.querySelectorAll(".tab-btn").forEach(function(btn){
-    btn.addEventListener("click", function(){
-      switchView(btn.dataset.view);
-    });
+    btn.addEventListener("click", function(){ switchView(btn.dataset.view); });
   });
+  document.getElementById("filterAuthor").addEventListener("change", renderHistory);
+  document.getElementById("filterCat").addEventListener("change",   renderHistory);
 
+  // ── render active tasks ───────────────────────────────────────────────────
   function render(){
-    const body = document.getElementById("ledgerBody");
+    const body  = document.getElementById("ledgerBody");
     const empty = document.getElementById("emptyState");
     body.innerHTML = "";
     empty.style.display = tasks.length ? "none" : "block";
@@ -501,70 +664,79 @@
     tasks.forEach(function(task, index){
       const tr = document.createElement("tr");
       const catColor = colorFor(CATEGORIES, task.category);
-      const prColor = colorFor(PRIORITIES, task.priority);
-      const stColor = colorFor(STATUSES, task.status);
+      const prColor  = colorFor(PRIORITIES,  task.priority);
+      const stColor  = colorFor(STATUSES,    task.status);
+
       tr.innerHTML =
-        '<td class="col-num">' + String(index + 1).padStart(3, "0") + "</td>" +
-        '<td class="col-cat"><select class="tag-select cat-select" data-id="' + task.id + '" style="border-color:' + catColor + ';color:' + catColor + ';">' +
-          optionsFor(CATEGORIES, task.category) +
-        "</select></td>" +
-        '<td class="col-priority"><select class="tag-select priority-select" data-id="' + task.id + '" style="border-color:' + prColor + ';color:' + prColor + ';">' +
-          optionsFor(PRIORITIES, task.priority) +
-        "</select></td>" +
-        '<td class="col-status"><select class="tag-select status-select" data-id="' + task.id + '" style="border-color:' + stColor + ';color:' + stColor + ';">' +
-          optionsFor(STATUSES, task.status) +
-        "</select></td>" +
-        '<td class="col-text"><textarea class="text-input" data-id="' + task.id + '" rows="1" placeholder="Что нужно сделать?">' + escapeHtml(task.text) + "</textarea></td>" +
-        '<td class="col-author"><input type="text" class="author-input" data-id="' + task.id + '" value="' + escapeHtml(task.author) + '" placeholder="Имя"></td>' +
-        '<td class="col-action"><button class="del-btn" data-id="' + task.id + '" type="button" title="Завершить (перенести в историю)">✕</button></td>';
+        '<td class="col-num">' + String(index+1).padStart(3,"0") + '</td>' +
+        '<td class="col-date col-date-cell">' + formatDate(task.createdAt) + '</td>' +
+        '<td class="col-cat"><select class="tag-select cat-select" data-id="' + task.id + '" style="border-color:' + catColor + ';color:' + catColor + ';">' + optionsFor(CATEGORIES, task.category) + '</select></td>' +
+        '<td class="col-priority"><select class="tag-select priority-select" data-id="' + task.id + '" style="border-color:' + prColor + ';color:' + prColor + ';">' + optionsFor(PRIORITIES, task.priority) + '</select></td>' +
+        '<td class="col-status"><select class="tag-select status-select" data-id="' + task.id + '" style="border-color:' + stColor + ';color:' + stColor + ';">' + optionsFor(STATUSES, task.status) + '</select></td>' +
+        '<td class="col-text"><textarea class="text-input task-text" data-id="' + task.id + '" rows="1" placeholder="Что нужно сделать?">' + escapeHtml(task.text) + '</textarea></td>' +
+        '<td class="col-text"><textarea class="text-input task-result" data-id="' + task.id + '" rows="1" placeholder="Результат…">' + escapeHtml(task.result) + '</textarea></td>' +
+        '<td class="col-deadline"><input type="text" class="deadline-input task-deadline" data-id="' + task.id + '" value="' + escapeHtml(task.deadline) + '" placeholder="напр. до 30.06"></td>' +
+        '<td class="col-author"><select class="tag-select author-select" data-id="' + task.id + '" style="border-color:var(--ink-muted);color:var(--ink-muted);">' + optionsFor(AUTHORS, task.author) + '</select></td>' +
+        '<td class="col-action"><button class="del-btn" data-id="' + task.id + '" type="button" title="Завершить">✕</button></td>';
+
       body.appendChild(tr);
     });
 
-    document.querySelectorAll(".text-input").forEach(autoGrow);
+    document.querySelectorAll(".task-text").forEach(autoGrow);
+    document.querySelectorAll(".task-result").forEach(autoGrow);
     attachRowListeners();
 
     if(pendingFocusId){
-      const el = document.querySelector('.text-input[data-id="' + pendingFocusId + '"]');
-      if(el){ el.focus(); }
+      const el = document.querySelector('.task-text[data-id="' + pendingFocusId + '"]');
+      if(el) el.focus();
       pendingFocusId = null;
     }
   }
 
+  // ── render history ────────────────────────────────────────────────────────
   function renderHistory(){
-    const body = document.getElementById("historyBody");
+    const body  = document.getElementById("historyBody");
     const empty = document.getElementById("emptyHistoryState");
+    const list  = filteredHistory();
     body.innerHTML = "";
-    empty.style.display = completedTasks.length ? "none" : "block";
+    empty.style.display = list.length ? "none" : "block";
 
-    completedTasks.forEach(function(task, index){
+    updateStats(filteredHistory()); // статистика по отфильтрованным
+
+    list.forEach(function(task, index){
       const tr = document.createElement("tr");
       const catColor = colorFor(CATEGORIES, task.category);
-      const prColor = colorFor(PRIORITIES, task.priority);
-      const stColor = colorFor(STATUSES, task.status);
+      const prColor  = colorFor(PRIORITIES,  task.priority);
+      const stColor  = colorFor(STATUSES,    task.status);
+
       tr.innerHTML =
-        '<td class="col-num">' + String(index + 1).padStart(3, "0") + "</td>" +
-        '<td class="col-cat"><span class="tag-badge" style="border-color:' + catColor + ';color:' + catColor + ';">' + escapeHtml(task.category) + "</span></td>" +
-        '<td class="col-priority"><span class="tag-badge" style="border-color:' + prColor + ';color:' + prColor + ';">' + escapeHtml(task.priority) + "</span></td>" +
-        '<td class="col-status"><span class="tag-badge" style="border-color:' + stColor + ';color:' + stColor + ';">' + escapeHtml(task.status) + "</span></td>" +
-        '<td class="col-text col-text-static">' + escapeHtml(task.text) + "</td>" +
-        '<td class="col-author">' + escapeHtml(task.author) + "</td>" +
-        '<td class="col-completed">' + formatTimestamp(task.completedAt) + "</td>";
+        '<td class="col-num">' + String(index+1).padStart(3,"0") + '</td>' +
+        '<td class="col-date col-date-cell">' + formatDate(task.createdAt) + '</td>' +
+        '<td class="col-cat"><span class="tag-badge" style="border-color:' + catColor + ';color:' + catColor + ';">' + escapeHtml(task.category) + '</span></td>' +
+        '<td class="col-priority"><span class="tag-badge" style="border-color:' + prColor + ';color:' + prColor + ';">' + escapeHtml(task.priority) + '</span></td>' +
+        '<td class="col-status"><span class="tag-badge" style="border-color:' + stColor + ';color:' + stColor + ';">' + escapeHtml(task.status) + '</span></td>' +
+        '<td class="col-text col-text-static">' + escapeHtml(task.text) + '</td>' +
+        '<td class="col-text col-text-static">' + escapeHtml(task.result) + '</td>' +
+        '<td class="col-deadline col-date-cell">' + escapeHtml(task.deadline) + '</td>' +
+        '<td class="col-author">' + escapeHtml(task.author) + '</td>' +
+        '<td class="col-completed">' + formatTimestamp(task.completedAt) + '</td>';
+
       body.appendChild(tr);
     });
   }
 
+  // ── update & write ────────────────────────────────────────────────────────
   function updateField(id, field, value){
-    if(!db){ return; }
+    if(!db) return;
     const patch = {};
     patch[field] = value;
     db.collection(COLLECTION_NAME).doc(id).update(patch).catch(function(e){
       console.error("Не удалось сохранить:", e);
     });
   }
-
   function scheduleWrite(id, field, value){
     const key = id + ":" + field;
-    if(pendingWrites[key]){ clearTimeout(pendingWrites[key]); }
+    if(pendingWrites[key]) clearTimeout(pendingWrites[key]);
     pendingWrites[key] = setTimeout(function(){
       updateField(id, field, value);
       delete pendingWrites[key];
@@ -572,15 +744,18 @@
   }
 
   function completeTask(id){
-    if(!db){ return; }
+    if(!db) return;
     const task = tasks.find(function(t){ return t.id === id; });
-    if(!task){ return; }
+    if(!task) return;
     db.collection(HISTORY_COLLECTION_NAME).add({
-      category: task.category,
-      priority: task.priority,
-      status: task.status,
-      text: task.text,
-      author: task.author,
+      category:    task.category,
+      priority:    task.priority,
+      status:      task.status,
+      text:        task.text,
+      result:      task.result,
+      deadline:    task.deadline,
+      author:      task.author,
+      createdAt:   task.createdAt || null,
       completedAt: firebase.firestore.FieldValue.serverTimestamp()
     }).then(function(){
       return db.collection(COLLECTION_NAME).doc(id).delete();
@@ -589,15 +764,15 @@
     });
   }
 
+  // ── listeners ─────────────────────────────────────────────────────────────
   function attachRowListeners(){
     document.querySelectorAll(".cat-select").forEach(function(sel){
       sel.addEventListener("change", function(e){
         const id = e.target.dataset.id;
         const task = tasks.find(function(t){ return t.id === id; });
-        if(task){ task.category = e.target.value; }
+        if(task) task.category = e.target.value;
         const color = colorFor(CATEGORIES, e.target.value);
-        e.target.style.borderColor = color;
-        e.target.style.color = color;
+        e.target.style.borderColor = color; e.target.style.color = color;
         updateField(id, "category", e.target.value);
       });
     });
@@ -605,10 +780,9 @@
       sel.addEventListener("change", function(e){
         const id = e.target.dataset.id;
         const task = tasks.find(function(t){ return t.id === id; });
-        if(task){ task.priority = e.target.value; }
+        if(task) task.priority = e.target.value;
         const color = colorFor(PRIORITIES, e.target.value);
-        e.target.style.borderColor = color;
-        e.target.style.color = color;
+        e.target.style.borderColor = color; e.target.style.color = color;
         updateField(id, "priority", e.target.value);
       });
     });
@@ -616,28 +790,44 @@
       sel.addEventListener("change", function(e){
         const id = e.target.dataset.id;
         const task = tasks.find(function(t){ return t.id === id; });
-        if(task){ task.status = e.target.value; }
+        if(task) task.status = e.target.value;
         const color = colorFor(STATUSES, e.target.value);
-        e.target.style.borderColor = color;
-        e.target.style.color = color;
+        e.target.style.borderColor = color; e.target.style.color = color;
         updateField(id, "status", e.target.value);
       });
     });
-    document.querySelectorAll(".text-input").forEach(function(inp){
+    document.querySelectorAll(".author-select").forEach(function(sel){
+      sel.addEventListener("change", function(e){
+        const id = e.target.dataset.id;
+        const task = tasks.find(function(t){ return t.id === id; });
+        if(task) task.author = e.target.value;
+        updateField(id, "author", e.target.value);
+      });
+    });
+    document.querySelectorAll(".task-text").forEach(function(inp){
       inp.addEventListener("input", function(e){
         const id = e.target.dataset.id;
         const task = tasks.find(function(t){ return t.id === id; });
-        if(task){ task.text = e.target.value; }
+        if(task) task.text = e.target.value;
         autoGrow(e.target);
         scheduleWrite(id, "text", e.target.value);
       });
     });
-    document.querySelectorAll(".author-input").forEach(function(inp){
+    document.querySelectorAll(".task-result").forEach(function(inp){
       inp.addEventListener("input", function(e){
         const id = e.target.dataset.id;
         const task = tasks.find(function(t){ return t.id === id; });
-        if(task){ task.author = e.target.value; }
-        scheduleWrite(id, "author", e.target.value);
+        if(task) task.result = e.target.value;
+        autoGrow(e.target);
+        scheduleWrite(id, "result", e.target.value);
+      });
+    });
+    document.querySelectorAll(".task-deadline").forEach(function(inp){
+      inp.addEventListener("input", function(e){
+        const id = e.target.dataset.id;
+        const task = tasks.find(function(t){ return t.id === id; });
+        if(task) task.deadline = e.target.value;
+        scheduleWrite(id, "deadline", e.target.value);
       });
     });
     document.querySelectorAll(".del-btn").forEach(function(btn){
@@ -649,15 +839,17 @@
 
   document.getElementById("addTaskBtn").addEventListener("click", function(){
     if(!db){
-      alert("Сначала настройте Firebase — без него создавать задачи нельзя. Подробности в generate_task_manager.py.");
+      alert("Сначала настройте Firebase. Подробности в generate_task_manager.py.");
       return;
     }
     db.collection(COLLECTION_NAME).add({
-      category: CATEGORIES[0],
-      priority: PRIORITIES[0],
-      status: STATUSES[0],
-      text: "",
-      author: "",
+      category:  CATEGORIES[0],
+      priority:  PRIORITIES[0],
+      status:    STATUSES[0],
+      text:      "",
+      result:    "",
+      deadline:  "",
+      author:    AUTHORS[0],
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     }).then(function(ref){
       pendingFocusId = ref.id;
@@ -667,16 +859,17 @@
   });
 
   window.addEventListener("resize", function(){
-    document.querySelectorAll(".text-input").forEach(autoGrow);
+    document.querySelectorAll(".task-text, .task-result").forEach(autoGrow);
   });
 
+  // ── init ──────────────────────────────────────────────────────────────────
   function init(){
+    populateFilters();
+
     if(isPlaceholderConfig()){
       document.getElementById("configWarning").style.display = "block";
       setSyncStatus("Не настроено", "is-error");
-      render();
-      renderHistory();
-      updateDoneCounter();
+      render(); renderHistory(); updateDoneCounter();
       return;
     }
     try{
@@ -687,39 +880,49 @@
       setSyncStatus("Ошибка подключения к Firebase", "is-error");
       return;
     }
-    db.collection(COLLECTION_NAME).orderBy("createdAt", "asc").onSnapshot(function(snapshot){
+
+    db.collection(COLLECTION_NAME).orderBy("createdAt","asc").onSnapshot(function(snapshot){
       tasks = snapshot.docs.map(function(doc){
-        const data = doc.data();
+        const d = doc.data();
         return {
-          id: doc.id,
-          category: data.category || CATEGORIES[0],
-          priority: data.priority || PRIORITIES[0],
-          status: data.status || STATUSES[0],
-          text: data.text || "",
-          author: data.author || ""
+          id:        doc.id,
+          category:  d.category  || CATEGORIES[0],
+          priority:  d.priority  || PRIORITIES[0],
+          status:    d.status    || STATUSES[0],
+          text:      d.text      || "",
+          result:    d.result    || "",
+          deadline:  d.deadline  || "",
+          author:    d.author    || AUTHORS[0],
+          createdAt: d.createdAt || null
         };
       });
       setSyncStatus("Синхронизировано — изменения видят все", "is-ok");
       const active = document.activeElement;
-      const isTyping = active && (active.classList.contains("text-input") || active.classList.contains("author-input"));
-      if(isTyping){ return; }
-      render();
+      const typing = active && (
+        active.classList.contains("task-text") ||
+        active.classList.contains("task-result") ||
+        active.classList.contains("task-deadline")
+      );
+      if(!typing) render();
     }, function(error){
       console.error("Firestore sync error:", error);
       setSyncStatus("Нет доступа — проверьте правила Firestore (Rules)", "is-error");
     });
 
-    db.collection(HISTORY_COLLECTION_NAME).orderBy("completedAt", "desc").onSnapshot(function(snapshot){
+    db.collection(HISTORY_COLLECTION_NAME).orderBy("completedAt","desc").onSnapshot(function(snapshot){
       completedTasks = snapshot.docs.map(function(doc){
-        const data = doc.data();
+        const d = doc.data();
         return {
-          id: doc.id,
-          category: data.category || CATEGORIES[0],
-          priority: data.priority || PRIORITIES[0],
-          status: data.status || STATUSES[0],
-          text: data.text || "",
-          author: data.author || "",
-          completedAt: data.completedAt || null
+          id:          doc.id,
+          category:    d.category  || CATEGORIES[0],
+          priority:    d.priority  || PRIORITIES[0],
+          status:      d.status    || STATUSES[0],
+          text:        d.text      || "",
+          result:      d.result    || "",
+          deadline:    d.deadline  || "",
+          author:      d.author    || AUTHORS[0],
+          createdAt:   d.createdAt   || null,
+          completedAt: d.completedAt || null
         };
       });
       updateDoneCounter();
