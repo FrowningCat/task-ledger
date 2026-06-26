@@ -8,422 +8,306 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper: #f6f1e4;
-    --card: #fffdf8;
-    --ink: #21303d;
-    --ink-muted: #5c6b73;
-    --rule: #cbc0a4;
-    --rule-soft: #ddd4ba;
-    --red: #b6402e;
-    --amber: #c2872e;
-    --sage: #6e7f58;
-    --navy: #2c3e55;
-    --teal: #2f7a6e;
-    --plum: #6b4a73;
+    --paper:#f6f1e4; --card:#fffdf8; --ink:#21303d; --ink-muted:#5c6b73;
+    --rule:#cbc0a4;  --rule-soft:#ddd4ba;
+    --red:#b6402e;   --amber:#c2872e; --sage:#6e7f58;
+    --navy:#2c3e55;  --teal:#2f7a6e;  --plum:#6b4a73;
+    --readonly-bg: rgba(111,127,88,0.06);
+    --readonly-border: rgba(111,127,88,0.25);
   }
-
-  *{ box-sizing: border-box; }
-
+  *{ box-sizing:border-box; }
   body{
-    margin: 0;
-    background: var(--paper);
-    background-image: repeating-linear-gradient(
-      to bottom,
-      rgba(33,48,61,0.025) 0px,
-      rgba(33,48,61,0.025) 1px,
-      transparent 1px,
-      transparent 34px
-    );
-    color: var(--ink);
-    font-family: 'Inter', sans-serif;
-    min-height: 100vh;
+    margin:0;
+    background:var(--paper);
+    background-image:repeating-linear-gradient(to bottom,rgba(33,48,61,.025) 0,rgba(33,48,61,.025) 1px,transparent 1px,transparent 34px);
+    color:var(--ink); font-family:'Inter',sans-serif; min-height:100vh;
   }
 
-  /* ── Основной контейнер: 85% экрана, прокрутка внутри ── */
+  /* ── контейнер 85 % ── */
   .page{
-    width: 85vw;
-    margin: 0 auto;
-    padding: 32px 28px 28px;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    top: 50%;
-    transform: translateY(-0%);
+    width:85vw;
+    margin:0 auto;
+    padding:32px 28px 28px;
+    display:flex; flex-direction:column;
+    position:relative; top:0; transform:translateY(-0%);
   }
 
+  /* masthead */
   .masthead{
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    gap: 24px;
-    flex-wrap: wrap;
-    border-bottom: 2px solid var(--ink);
-    padding-bottom: 18px;
-    margin-bottom: 16px;
-    flex-shrink: 0;
+    display:flex; justify-content:space-between; align-items:flex-end;
+    gap:24px; flex-wrap:wrap;
+    border-bottom:2px solid var(--ink);
+    padding-bottom:18px; margin-bottom:16px; flex-shrink:0;
   }
-
   .eyebrow{
-    font-family: 'IBM Plex Mono', monospace;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    font-size: 0.72rem;
-    color: var(--sage);
-    margin: 0 0 6px;
+    font-family:'IBM Plex Mono',monospace; text-transform:uppercase;
+    letter-spacing:.12em; font-size:.72rem; color:var(--sage); margin:0 0 6px;
   }
-
   .masthead h1{
-    font-family: 'Fraunces', serif;
-    font-style: italic;
-    font-weight: 600;
-    font-size: clamp(1.6rem, 3vw, 2.2rem);
-    margin: 0;
-    color: var(--ink);
+    font-family:'Fraunces',serif; font-style:italic; font-weight:600;
+    font-size:clamp(1.6rem,3vw,2.2rem); margin:0; color:var(--ink);
   }
-
   .stamp-btn{
-    font-family: 'IBM Plex Mono', monospace;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: var(--red);
-    background: transparent;
-    border: 2px dashed var(--red);
-    border-radius: 8px 14px 9px 16px;
-    padding: 10px 18px;
-    cursor: pointer;
-    transform: rotate(-2deg);
-    transition: transform 0.15s ease, background 0.15s ease;
-    white-space: nowrap;
+    font-family:'IBM Plex Mono',monospace; text-transform:uppercase;
+    letter-spacing:.06em; font-size:.85rem; font-weight:500;
+    color:var(--red); background:transparent;
+    border:2px dashed var(--red); border-radius:8px 14px 9px 16px;
+    padding:10px 18px; cursor:pointer; transform:rotate(-2deg);
+    transition:transform .15s, background .15s; white-space:nowrap;
   }
-  .stamp-btn:hover{ transform: rotate(0deg); background: rgba(182,64,46,0.08); }
-  .stamp-btn:focus-visible{ outline: 2px solid var(--ink); outline-offset: 3px; }
+  .stamp-btn:hover{ transform:rotate(0deg); background:rgba(182,64,46,.08); }
+  .stamp-btn:focus-visible{ outline:2px solid var(--ink); outline-offset:3px; }
 
+  /* notice */
   .notice{
-    margin: 0 0 12px;
-    padding: 12px 16px;
-    border: 2px dashed var(--amber);
-    border-radius: 6px;
-    background: rgba(194,135,46,0.08);
-    color: var(--ink);
-    font-size: 0.88rem;
-    line-height: 1.5;
-    display: none;
-    flex-shrink: 0;
+    margin:0 0 12px; padding:12px 16px;
+    border:2px dashed var(--amber); border-radius:6px;
+    background:rgba(194,135,46,.08); color:var(--ink);
+    font-size:.88rem; line-height:1.5; display:none; flex-shrink:0;
   }
-  .notice strong{ color: var(--amber); }
+  .notice strong{ color:var(--amber); }
   .notice code{
-    font-family: 'IBM Plex Mono', monospace;
-    background: rgba(33,48,61,0.06);
-    padding: 1px 5px;
-    border-radius: 3px;
+    font-family:'IBM Plex Mono',monospace;
+    background:rgba(33,48,61,.06); padding:1px 5px; border-radius:3px;
   }
 
+  /* toolbar */
   .toolbar{
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    flex-wrap: wrap;
-    flex-shrink: 0;
-    margin-bottom: 10px;
+    display:flex; align-items:center; gap:16px;
+    flex-wrap:wrap; flex-shrink:0; margin-bottom:10px;
   }
-
   .sync-status{
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--ink-muted);
-    margin: 0;
+    font-family:'IBM Plex Mono',monospace; font-size:.72rem;
+    text-transform:uppercase; letter-spacing:.06em; color:var(--ink-muted); margin:0;
   }
-  .sync-status.is-error{ color: var(--red); }
-  .sync-status.is-ok{ color: var(--sage); }
-
+  .sync-status.is-error{ color:var(--red); }
+  .sync-status.is-ok{ color:var(--sage); }
   .done-counter{
-    font-family: 'IBM Plex Mono', monospace;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    font-size: 0.72rem;
-    color: var(--ink-muted);
-    margin: 0;
+    font-family:'IBM Plex Mono',monospace; text-transform:uppercase;
+    letter-spacing:.06em; font-size:.72rem; color:var(--ink-muted); margin:0;
   }
-  .done-counter strong{
-    font-size: 0.95rem;
-    color: var(--sage);
-    font-weight: 600;
-    letter-spacing: 0;
-  }
+  .done-counter strong{ font-size:.95rem; color:var(--sage); font-weight:600; letter-spacing:0; }
 
-  /* ── Вкладки + фильтры ── */
+  /* tabs row */
   .tabs-row{
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-    flex-shrink: 0;
-    margin-bottom: 10px;
-    border-bottom: 1px solid var(--rule-soft);
-    padding-bottom: 10px;
+    display:flex; align-items:center; gap:8px; flex-wrap:wrap;
+    flex-shrink:0; margin-bottom:10px;
+    border-bottom:1px solid var(--rule-soft); padding-bottom:10px;
   }
-
   .tab-btn{
-    font-family: 'IBM Plex Mono', monospace;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    font-size: 0.78rem;
-    font-weight: 500;
-    color: var(--ink-muted);
-    background: transparent;
-    border: none;
-    border-bottom: 2px solid transparent;
-    padding: 6px 4px;
-    cursor: pointer;
-    transition: color 0.15s, border-color 0.15s;
+    font-family:'IBM Plex Mono',monospace; text-transform:uppercase;
+    letter-spacing:.06em; font-size:.78rem; font-weight:500;
+    color:var(--ink-muted); background:transparent;
+    border:none; border-bottom:2px solid transparent;
+    padding:6px 4px; cursor:pointer; transition:color .15s, border-color .15s;
   }
-  .tab-btn:hover{ color: var(--ink); }
-  .tab-btn.is-active{ color: var(--ink); border-bottom-color: var(--sage); }
-  .tab-btn .tab-count{ color: var(--sage); }
+  .tab-btn:hover{ color:var(--ink); }
+  .tab-btn.is-active{ color:var(--ink); border-bottom-color:var(--sage); }
+  .tab-btn .tab-count{ color:var(--sage); }
+  .sep{ width:1px; height:20px; background:var(--rule); flex-shrink:0; }
 
-  .sep{ width: 1px; height: 20px; background: var(--rule); flex-shrink: 0; }
+  /* история: фильтры + диапазон дат */
+  .history-controls{
+    display:none; align-items:center; gap:10px; flex-wrap:wrap;
+    flex-shrink:0; margin-bottom:10px;
+  }
+  .history-controls.is-visible{ display:flex; }
 
   .filter-select{
-    font-family: 'IBM Plex Mono', monospace;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    font-size: 0.68rem;
-    font-weight: 500;
-    background: transparent;
-    border: 1px solid var(--rule);
-    border-radius: 4px;
-    color: var(--ink-muted);
-    padding: 4px 24px 4px 8px;
-    cursor: pointer;
-    appearance: none;
-    -webkit-appearance: none;
-    background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
-                       linear-gradient(135deg, currentColor 50%, transparent 50%);
-    background-position: calc(100% - 10px) center, calc(100% - 5px) center;
-    background-size: 4px 4px, 4px 4px;
-    background-repeat: no-repeat;
+    font-family:'IBM Plex Mono',monospace; text-transform:uppercase;
+    letter-spacing:.04em; font-size:.68rem; font-weight:500;
+    background:transparent; border:1px solid var(--rule); border-radius:4px;
+    color:var(--ink-muted); padding:4px 24px 4px 8px; cursor:pointer;
+    appearance:none; -webkit-appearance:none;
+    background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),
+                     linear-gradient(135deg,currentColor 50%,transparent 50%);
+    background-position:calc(100% - 10px) center,calc(100% - 5px) center;
+    background-size:4px 4px,4px 4px; background-repeat:no-repeat;
   }
-  .filter-select:focus-visible{ outline: 2px solid var(--ink); outline-offset: 2px; }
+  .filter-select:focus-visible{ outline:2px solid var(--ink); outline-offset:2px; }
 
-  /* ── Статистика (только на вкладке Выполненные) ── */
-  .stats-row{
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    flex-shrink: 0;
-    margin-bottom: 10px;
+  .date-label{
+    font-family:'IBM Plex Mono',monospace; font-size:.68rem;
+    text-transform:uppercase; letter-spacing:.06em; color:var(--ink-muted);
+    white-space:nowrap;
   }
+  .date-input{
+    font-family:'IBM Plex Mono',monospace; font-size:.72rem;
+    color:var(--ink); background:transparent;
+    border:1px solid var(--rule); border-radius:4px;
+    padding:4px 8px; cursor:pointer;
+  }
+  .date-input:focus-visible{ outline:2px solid var(--ink); outline-offset:2px; }
+  .reset-btn{
+    font-family:'IBM Plex Mono',monospace; font-size:.68rem;
+    text-transform:uppercase; letter-spacing:.06em;
+    color:var(--ink-muted); background:transparent;
+    border:1px solid var(--rule); border-radius:4px;
+    padding:4px 10px; cursor:pointer;
+  }
+  .reset-btn:hover{ color:var(--ink); border-color:var(--ink); }
+
+  /* stats */
+  .stats-row{
+    display:none; gap:12px; flex-wrap:wrap; flex-shrink:0; margin-bottom:10px;
+  }
+  .stats-row.is-visible{ display:flex; }
   .stat-box{
-    background: var(--card);
-    border: 1px solid var(--rule);
-    border-radius: 6px;
-    padding: 10px 18px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-    min-width: 90px;
+    background:var(--card); border:1px solid var(--rule); border-radius:6px;
+    padding:8px 16px; display:flex; flex-direction:column; align-items:center; gap:2px; min-width:80px;
   }
   .stat-box .stat-num{
-    font-family: 'Fraunces', serif;
-    font-size: 1.6rem;
-    font-weight: 600;
-    color: var(--sage);
-    line-height: 1;
+    font-family:'Fraunces',serif; font-size:1.5rem; font-weight:600;
+    color:var(--sage); line-height:1;
   }
   .stat-box .stat-label{
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.62rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--ink-muted);
+    font-family:'IBM Plex Mono',monospace; font-size:.6rem;
+    text-transform:uppercase; letter-spacing:.08em; color:var(--ink-muted);
   }
 
-  /* ── Белая карточка с прокруткой ── */
+  /* scrollable white zone */
   .ledger-wrap{
-    flex: 1;
-    overflow: auto;
-    background: var(--card);
-    border: 1px solid var(--rule);
-    border-radius: 6px;
-    box-shadow: 0 1px 0 var(--rule-soft), 0 12px 28px rgba(33,48,61,0.06);
+    flex:1; overflow:auto;
+    background:var(--card); border:1px solid var(--rule); border-radius:6px;
+    box-shadow:0 1px 0 var(--rule-soft), 0 12px 28px rgba(33,48,61,.06);
+    min-height:0;
   }
 
-  .view{ display: none; }
-  .view.is-active{ display: contents; }
+  .view{ display:none; }
+  .view.is-active{ display:contents; }
 
   table{
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
-    min-width: 980px;
+    width:100%; border-collapse:collapse; table-layout:fixed; min-width:1060px;
   }
-
   thead th{
-    position: sticky;
-    top: 0;
-    z-index: 2;
-    background: var(--card);
-    text-align: left;
-    font-family: 'IBM Plex Mono', monospace;
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-    font-size: 0.68rem;
-    color: var(--ink-muted);
-    border-bottom: 2px solid var(--ink);
-    padding: 12px 10px;
-    font-weight: 500;
+    position:sticky; top:0; z-index:2; background:var(--card);
+    text-align:left;
+    font-family:'IBM Plex Mono',monospace; text-transform:uppercase;
+    letter-spacing:.07em; font-size:.66rem; color:var(--ink-muted);
+    border-bottom:2px solid var(--ink); padding:11px 9px; font-weight:500;
   }
-
-  tbody tr{ border-bottom: 1px dashed var(--rule); }
-  tbody tr:nth-child(even){ background: rgba(33,48,61,0.02); }
-
-  td{
-    padding: 8px 10px;
-    vertical-align: middle;
+  /* подсветка «моих» столбцов */
+  thead th.mine{
+    color:var(--sage);
+    background: linear-gradient(to bottom, rgba(111,127,88,.08), var(--card));
   }
+  tbody tr{ border-bottom:1px dashed var(--rule); }
+  tbody tr:nth-child(even){ background:rgba(33,48,61,.02); }
+  td{ padding:7px 9px; vertical-align:middle; }
 
-  .col-num{
-    width: 42px;
-    font-family: 'IBM Plex Mono', monospace;
-    color: var(--ink-muted);
-    text-align: center;
-    font-size: 0.82rem;
-  }
-  .col-action{ width: 30px; }
-  .col-cat, .col-priority, .col-status{ width: 120px; }
-  .col-author{ width: 110px; }
-  .col-date{ width: 90px; }
-  .col-deadline{ width: 110px; }
-  .col-completed{ width: 110px; }
+  /* ширины столбцов */
+  .col-num{     width:42px; font-family:'IBM Plex Mono',monospace; color:var(--ink-muted); text-align:center; font-size:.82rem; }
+  .col-action{  width:30px; }
+  .col-returns{ width:52px; text-align:center; }
+  .col-cat,.col-priority,.col-status{ width:114px; }
+  .col-author{  width:108px; }
+  .col-date{    width:80px; }
+  .col-deadline{ width:100px; }
+  .col-completed{ width:110px; }
 
+  /* tag selects */
   select.tag-select{
-    font-family: 'IBM Plex Mono', monospace;
-    text-transform: uppercase;
-    letter-spacing: 0.02em;
-    font-size: 0.65rem;
-    font-weight: 500;
-    background-color: transparent;
-    border: 2px dashed var(--navy);
-    color: var(--navy);
-    border-radius: 999px;
-    padding: 4px 18px 4px 8px;
-    cursor: pointer;
-    transform: rotate(-1.5deg);
-    appearance: none;
-    -webkit-appearance: none;
-    background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
-                       linear-gradient(135deg, currentColor 50%, transparent 50%);
-    background-position: calc(100% - 10px) center, calc(100% - 5px) center;
-    background-size: 4px 4px, 4px 4px;
-    background-repeat: no-repeat;
-    width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    font-family:'IBM Plex Mono',monospace; text-transform:uppercase;
+    letter-spacing:.02em; font-size:.64rem; font-weight:500;
+    background-color:transparent; border:2px dashed var(--navy);
+    color:var(--navy); border-radius:999px;
+    padding:4px 18px 4px 8px; cursor:pointer; transform:rotate(-1.5deg);
+    appearance:none; -webkit-appearance:none;
+    background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),
+                     linear-gradient(135deg,currentColor 50%,transparent 50%);
+    background-position:calc(100% - 10px) center,calc(100% - 5px) center;
+    background-size:4px 4px,4px 4px; background-repeat:no-repeat;
+    width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
   }
-  select.tag-select:focus-visible{ outline: 2px solid var(--ink); outline-offset: 2px; }
+  select.tag-select:focus-visible{ outline:2px solid var(--ink); outline-offset:2px; }
 
+  /* text inputs */
   .text-input{
-    display: block;
-    width: 100%;
-    border: none;
-    border-bottom: 1px solid var(--rule);
-    background: transparent;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.88rem;
-    line-height: 1.45;
-    color: var(--ink);
-    padding: 4px 4px;
-    resize: none;
-    overflow: hidden;
-    min-height: 32px;
+    display:block; width:100%; border:none;
+    border-bottom:1px solid var(--rule); background:transparent;
+    font-family:'Inter',sans-serif; font-size:.87rem; line-height:1.45;
+    color:var(--ink); padding:4px; resize:none; overflow:hidden; min-height:30px;
   }
-  .text-input:focus{
-    outline: none;
-    border-bottom: 1px solid var(--ink);
+  .text-input:focus{ outline:none; border-bottom:1px solid var(--ink); }
+  .text-input::placeholder{ color:var(--ink-muted); opacity:.6; }
+
+  /* «мои» ячейки — лёгкий зелёный фон */
+  td.my-cell .text-input{
+    background:var(--readonly-bg);
+    border-bottom:1px solid var(--readonly-border);
   }
-  .text-input::placeholder{
-    color: var(--ink-muted);
-    opacity: 0.6;
+  td.my-cell .text-input:focus{
+    background:rgba(111,127,88,.1);
+    border-bottom:1px solid var(--sage);
+  }
+  td.my-cell .deadline-input{
+    background:var(--readonly-bg);
+    border-bottom:1px solid var(--readonly-border);
+  }
+  td.my-cell .deadline-input:focus{
+    background:rgba(111,127,88,.1);
+    border-bottom:1px solid var(--sage);
   }
 
   .deadline-input{
-    width: 100%;
-    border: none;
-    border-bottom: 1px solid var(--rule);
-    background: transparent;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.78rem;
-    color: var(--ink);
-    padding: 4px 4px;
+    width:100%; border:none; border-bottom:1px solid var(--rule); background:transparent;
+    font-family:'IBM Plex Mono',monospace; font-size:.76rem; color:var(--ink); padding:4px;
   }
-  .deadline-input:focus{
-    outline: none;
-    border-bottom: 1px solid var(--ink);
-  }
-  .deadline-input::placeholder{
-    color: var(--ink-muted);
-    opacity: 0.6;
-  }
+  .deadline-input:focus{ outline:none; border-bottom:1px solid var(--ink); }
+  .deadline-input::placeholder{ color:var(--ink-muted); opacity:.6; }
 
   .del-btn{
-    border: none;
-    background: transparent;
-    color: var(--rule);
-    font-size: 1rem;
-    cursor: pointer;
-    line-height: 1;
-    padding: 4px;
+    border:none; background:transparent; color:var(--rule);
+    font-size:1rem; cursor:pointer; line-height:1; padding:4px;
   }
-  .del-btn:hover{ color: var(--red); }
-  .del-btn:focus-visible{ outline: 2px solid var(--ink); outline-offset: 2px; }
+  .del-btn:hover{ color:var(--red); }
 
+  /* кнопка «вернуть» */
+  .restore-btn{
+    border:none; background:transparent; color:var(--rule);
+    font-size:.9rem; cursor:pointer; line-height:1; padding:4px;
+    title:"Вернуть в работу";
+  }
+  .restore-btn:hover{ color:var(--teal); }
+
+  /* счётчик возвратов */
+  .returns-badge{
+    display:inline-flex; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono',monospace; font-size:.68rem; font-weight:500;
+    color:var(--ink-muted); background:rgba(33,48,61,.06);
+    border-radius:999px; min-width:22px; padding:2px 6px;
+  }
+  .returns-badge.has-returns{ color:var(--teal); background:rgba(47,122,110,.1); }
+
+  /* badges (история) */
   .tag-badge{
-    display: inline-block;
-    font-family: 'IBM Plex Mono', monospace;
-    text-transform: uppercase;
-    letter-spacing: 0.02em;
-    font-size: 0.65rem;
-    font-weight: 500;
-    border: 2px dashed var(--navy);
-    color: var(--navy);
-    border-radius: 999px;
-    padding: 4px 10px;
-    transform: rotate(-1.5deg);
-    white-space: nowrap;
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    display:inline-block; font-family:'IBM Plex Mono',monospace;
+    text-transform:uppercase; letter-spacing:.02em; font-size:.64rem; font-weight:500;
+    border:2px dashed var(--navy); color:var(--navy); border-radius:999px;
+    padding:4px 10px; transform:rotate(-1.5deg);
+    white-space:nowrap; max-width:100%; overflow:hidden; text-overflow:ellipsis;
   }
-
-  td.col-text-static{
-    font-size: 0.88rem;
-    line-height: 1.45;
-    color: var(--ink);
-    white-space: pre-wrap;
-  }
+  td.col-text-static{ font-size:.87rem; line-height:1.45; color:var(--ink); white-space:pre-wrap; }
   td.col-date-cell, td.col-completed{
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.72rem;
-    color: var(--ink-muted);
+    font-family:'IBM Plex Mono',monospace; font-size:.72rem; color:var(--ink-muted);
   }
-
   .empty-state{
-    margin: 0;
-    padding: 36px 16px;
-    text-align: center;
-    font-style: italic;
-    color: var(--ink-muted);
+    margin:0; padding:36px 16px; text-align:center;
+    font-style:italic; color:var(--ink-muted);
   }
 
-  @media (prefers-reduced-motion: reduce){
-    .stamp-btn{ transition: none; }
+  /* легенда «мои столбцы» */
+  .legend{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:'IBM Plex Mono',monospace; font-size:.66rem;
+    text-transform:uppercase; letter-spacing:.06em; color:var(--sage);
   }
+  .legend-dot{
+    width:8px; height:8px; border-radius:50%;
+    background:var(--sage); flex-shrink:0;
+  }
+
+  @media (prefers-reduced-motion:reduce){ .stamp-btn{ transition:none; } }
 </style>
 </head>
 <body>
@@ -434,12 +318,15 @@
       <p class="eyebrow">Канцелярская книга №1</p>
       <h1>Журнал задач</h1>
     </div>
-    <button id="addTaskBtn" class="stamp-btn" type="button">+ Создать задачу</button>
+    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+      <span class="legend"><span class="legend-dot"></span>Заполняет Влад: Результат и Сроки</span>
+      <button id="addTaskBtn" class="stamp-btn" type="button">+ Создать задачу</button>
+    </div>
   </header>
 
   <div id="configWarning" class="notice">
     <strong>Firebase не настроен.</strong> Откройте <code>generate_task_manager.py</code>,
-    вставьте свои данные в <code>FIREBASE_CONFIG</code> и запустите скрипт снова.
+    вставьте данные в <code>FIREBASE_CONFIG</code> и запустите скрипт снова.
   </div>
 
   <div class="toolbar">
@@ -447,35 +334,42 @@
     <p class="done-counter">Выполнено: <strong id="doneCounter">0</strong></p>
   </div>
 
-  <!-- Вкладки + фильтры истории -->
+  <!-- tabs -->
   <div class="tabs-row">
     <button class="tab-btn is-active" data-view="active" type="button">Активные</button>
     <button class="tab-btn" data-view="history" type="button">
       Выполненные <span class="tab-count">(<span id="tabDoneCount">0</span>)</span>
     </button>
+  </div>
+
+  <!-- история: фильтры + диапазон дат (скрыты на вкладке Активные) -->
+  <div id="historyControls" class="history-controls">
+    <select id="filterAuthor" class="filter-select">
+      <option value="">Все авторы</option>
+    </select>
+    <select id="filterCat" class="filter-select">
+      <option value="">Все категории</option>
+    </select>
     <span class="sep"></span>
-    <!-- фильтры видны только на вкладке истории -->
-    <span id="historyFilters" style="display:none;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-      <select id="filterAuthor" class="filter-select">
-        <option value="">Все авторы</option>
-      </select>
-      <select id="filterCat" class="filter-select">
-        <option value="">Все категории</option>
-      </select>
-    </span>
+    <span class="date-label">с</span>
+    <input type="date" id="dateFrom" class="date-input">
+    <span class="date-label">по</span>
+    <input type="date" id="dateTo" class="date-input">
+    <button id="resetDates" class="reset-btn" type="button">Сбросить</button>
   </div>
 
-  <!-- Статистика (только история) -->
-  <div id="statsRow" class="stats-row" style="display:none;">
+  <!-- stats (только история) -->
+  <div id="statsRow" class="stats-row">
     <div class="stat-box"><span class="stat-num" id="statToday">0</span><span class="stat-label">Сегодня</span></div>
-    <div class="stat-box"><span class="stat-num" id="statWeek">0</span><span class="stat-label">За неделю</span></div>
-    <div class="stat-box"><span class="stat-num" id="statMonth">0</span><span class="stat-label">За месяц</span></div>
+    <div class="stat-box"><span class="stat-num" id="statWeek">0</span><span class="stat-label">7 дней</span></div>
+    <div class="stat-box"><span class="stat-num" id="statMonth">0</span><span class="stat-label">Месяц</span></div>
+    <div class="stat-box"><span class="stat-num" id="statRange">—</span><span class="stat-label">Период</span></div>
   </div>
 
-  <!-- Прокручиваемая белая зона -->
+  <!-- white scrollable area -->
   <div class="ledger-wrap">
 
-    <!-- ── АКТИВНЫЕ ЗАДАЧИ ── -->
+    <!-- active -->
     <div id="activeView" class="view is-active">
       <table>
         <thead>
@@ -486,9 +380,10 @@
             <th class="col-priority">Приоритет</th>
             <th class="col-status">Статус</th>
             <th class="col-text">Текст задачи</th>
-            <th class="col-text">Результат</th>
-            <th class="col-deadline">Сроки</th>
+            <th class="col-text mine">Результат ●</th>
+            <th class="col-deadline mine">Сроки ●</th>
             <th class="col-author">Кто создал</th>
+            <th class="col-returns">↩</th>
             <th class="col-action"></th>
           </tr>
         </thead>
@@ -497,7 +392,7 @@
       <p id="emptyState" class="empty-state">Пока нет ни одной записи. Нажмите «Создать задачу».</p>
     </div>
 
-    <!-- ── ВЫПОЛНЕННЫЕ ── -->
+    <!-- history -->
     <div id="historyView" class="view">
       <table>
         <thead>
@@ -508,10 +403,12 @@
             <th class="col-priority">Приоритет</th>
             <th class="col-status">Статус</th>
             <th class="col-text">Текст задачи</th>
-            <th class="col-text">Результат</th>
-            <th class="col-deadline">Сроки</th>
+            <th class="col-text mine">Результат ●</th>
+            <th class="col-deadline mine">Сроки ●</th>
             <th class="col-author">Кто создал</th>
+            <th class="col-returns">↩</th>
             <th class="col-completed">Завершено</th>
+            <th class="col-action" title="Вернуть в работу"></th>
           </tr>
         </thead>
         <tbody id="historyBody"></tbody>
@@ -525,226 +422,249 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script>
-  const CATEGORIES = ["Продвижение", "Поставки", "Отчеты", "Честный знак", "Контент", "Отзывы", "Возвраты"];
+  const CATEGORIES = ["Продвижение", "Поставки", "Отчеты", "Честный знак", "Контент", "Отзывы", "Возвраты", "Сисадмин"];
   const PRIORITIES  = ["Срочно", "Важно", "Обычная", "Идея"];
   const STATUSES    = ["Скоро начну", "В работе", "Готово", "Отложено"];
   const AUTHORS     = ["Влад", "Милана", "Алла", "Марина", "Имам", "Ира", "Анна", "Вика", "Александр", "Александра"];
   const FIREBASE_CONFIG = {"apiKey": "AIzaSyCbiW-rv05DdI_Y5a5WtCCyuzA8BgjD6rk", "authDomain": "task-ebb73.firebaseapp.com", "projectId": "task-ebb73", "storageBucket": "task-ebb73.firebasestorage.app", "messagingSenderId": "1031614791847", "appId": "1:1031614791847:web:a4d2c9e0b4299af979db82"};
   const COLLECTION_NAME         = "tasks";
   const HISTORY_COLLECTION_NAME = "completed_tasks";
-  const COLOR_PALETTE = ["var(--red)","var(--amber)","var(--sage)","var(--navy)","var(--teal)","var(--plum)"];
+  const PALETTE = ["var(--red)","var(--amber)","var(--sage)","var(--navy)","var(--teal)","var(--plum)","var(--ink-muted)","var(--ink)"];
 
-  let tasks = [];
-  let completedTasks = [];
-  let db = null;
-  let pendingFocusId = null;
+  let tasks = [], completedTasks = [], db = null, pendingFocusId = null;
   const pendingWrites = {};
 
   // ── helpers ──────────────────────────────────────────────────────────────
-  function colorFor(list, value){
-    const idx = list.indexOf(value);
-    return COLOR_PALETTE[(idx === -1 ? 0 : idx) % COLOR_PALETTE.length];
+  function colorFor(list, val){
+    const i = list.indexOf(val);
+    return PALETTE[(i < 0 ? 0 : i) % PALETTE.length];
   }
-  function autoGrow(el){
-    el.style.height = "auto";
-    el.style.height = el.scrollHeight + "px";
-  }
-  function escapeHtml(str){
-    const div = document.createElement("div");
-    div.textContent = str || "";
-    return div.innerHTML;
-  }
-  function optionsFor(list, selected){
+  function autoGrow(el){ el.style.height="auto"; el.style.height=el.scrollHeight+"px"; }
+  function esc(s){ const d=document.createElement("div"); d.textContent=s||""; return d.innerHTML; }
+  function optionsFor(list, sel){
     return list.map(function(c){
-      return '<option value="' + c + '"' + (c === selected ? ' selected' : '') + '>' + c + '</option>';
+      return '<option value="'+c+'"'+(c===sel?' selected':'')+'>'+c+'</option>';
     }).join("");
   }
-  function setSyncStatus(text, state){
-    const el = document.getElementById("syncStatus");
-    el.textContent = text;
-    el.classList.remove("is-ok","is-error");
-    if(state) el.classList.add(state);
+  function setSyncStatus(t,s){
+    const el=document.getElementById("syncStatus");
+    el.textContent=t; el.classList.remove("is-ok","is-error");
+    if(s) el.classList.add(s);
   }
-  function isPlaceholderConfig(){
-    return !FIREBASE_CONFIG.apiKey || FIREBASE_CONFIG.apiKey.indexOf("ВАШ_") === 0;
+  function isPlaceholder(){ return !FIREBASE_CONFIG.apiKey||FIREBASE_CONFIG.apiKey.indexOf("ВАШ_")===0; }
+  function fmtDate(ts){
+    if(!ts||!ts.toDate) return "—";
+    const d=ts.toDate(), p=function(n){return String(n).padStart(2,"0");};
+    return p(d.getDate())+"."+p(d.getMonth()+1)+"."+String(d.getFullYear()).slice(2);
   }
-  function formatDate(ts){
-    if(!ts || !ts.toDate) return "—";
-    const d = ts.toDate();
-    const p = function(n){ return String(n).padStart(2,"0"); };
-    return p(d.getDate()) + "." + p(d.getMonth()+1) + "." + String(d.getFullYear()).slice(2);
-  }
-  function formatTimestamp(ts){
-    if(!ts || !ts.toDate) return "—";
-    const d = ts.toDate();
-    const p = function(n){ return String(n).padStart(2,"0"); };
-    return p(d.getDate()) + "." + p(d.getMonth()+1) + "." + d.getFullYear()
-         + " " + p(d.getHours()) + ":" + p(d.getMinutes());
+  function fmtTs(ts){
+    if(!ts||!ts.toDate) return "—";
+    const d=ts.toDate(), p=function(n){return String(n).padStart(2,"0");};
+    return p(d.getDate())+"."+p(d.getMonth()+1)+"."+d.getFullYear()+" "+p(d.getHours())+":"+p(d.getMinutes());
   }
   function updateDoneCounter(){
-    const count = completedTasks.length;
-    document.getElementById("doneCounter").textContent = count;
-    document.getElementById("tabDoneCount").textContent = count;
+    const n=completedTasks.length;
+    document.getElementById("doneCounter").textContent=n;
+    document.getElementById("tabDoneCount").textContent=n;
   }
 
   // ── stats ─────────────────────────────────────────────────────────────────
   function updateStats(list){
-    const now  = new Date();
-    const d0   = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const w0   = new Date(d0); w0.setDate(d0.getDate() - 6);
-    const m0   = new Date(now.getFullYear(), now.getMonth(), 1);
-    let today = 0, week = 0, month = 0;
+    const now=new Date();
+    const d0=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+    const w0=new Date(d0); w0.setDate(d0.getDate()-6);
+    const m0=new Date(now.getFullYear(),now.getMonth(),1);
+    let today=0,week=0,month=0;
     list.forEach(function(t){
-      if(!t.completedAt || !t.completedAt.toDate) return;
-      const dd = t.completedAt.toDate();
-      if(dd >= d0)   today++;
-      if(dd >= w0)   week++;
-      if(dd >= m0)   month++;
+      if(!t.completedAt||!t.completedAt.toDate) return;
+      const dd=t.completedAt.toDate();
+      if(dd>=d0) today++;
+      if(dd>=w0) week++;
+      if(dd>=m0) month++;
     });
-    document.getElementById("statToday").textContent = today;
-    document.getElementById("statWeek").textContent  = week;
-    document.getElementById("statMonth").textContent = month;
+    document.getElementById("statToday").textContent=today;
+    document.getElementById("statWeek").textContent=week;
+    document.getElementById("statMonth").textContent=month;
+    // period
+    const from=document.getElementById("dateFrom").value;
+    const to  =document.getElementById("dateTo").value;
+    if(from||to){
+      const f=from?new Date(from):null;
+      const t2=to?new Date(to+"T23:59:59"):null;
+      let cnt=0;
+      completedTasks.forEach(function(t){
+        if(!t.completedAt||!t.completedAt.toDate) return;
+        const dd=t.completedAt.toDate();
+        if(f&&dd<f) return;
+        if(t2&&dd>t2) return;
+        cnt++;
+      });
+      document.getElementById("statRange").textContent=cnt;
+    } else {
+      document.getElementById("statRange").textContent="—";
+    }
   }
 
-  // ── filters ───────────────────────────────────────────────────────────────
+  // ── filters & date range ──────────────────────────────────────────────────
   function populateFilters(){
-    const fa = document.getElementById("filterAuthor");
-    const fc = document.getElementById("filterCat");
-    // сохраняем выбранное
-    const selA = fa.value, selC = fc.value;
-    fa.innerHTML = '<option value="">Все авторы</option>';
-    fc.innerHTML = '<option value="">Все категории</option>';
+    const fa=document.getElementById("filterAuthor");
+    const fc=document.getElementById("filterCat");
+    const selA=fa.value, selC=fc.value;
+    fa.innerHTML='<option value="">Все авторы</option>';
+    fc.innerHTML='<option value="">Все категории</option>';
     AUTHORS.forEach(function(a){
-      const o = document.createElement("option");
-      o.value = a; o.textContent = a;
-      if(a === selA) o.selected = true;
-      fa.appendChild(o);
+      const o=document.createElement("option");
+      o.value=a; o.textContent=a; if(a===selA) o.selected=true; fa.appendChild(o);
     });
     CATEGORIES.forEach(function(c){
-      const o = document.createElement("option");
-      o.value = c; o.textContent = c;
-      if(c === selC) o.selected = true;
-      fc.appendChild(o);
+      const o=document.createElement("option");
+      o.value=c; o.textContent=c; if(c===selC) o.selected=true; fc.appendChild(o);
     });
   }
 
   function filteredHistory(){
-    const a = document.getElementById("filterAuthor").value;
-    const c = document.getElementById("filterCat").value;
+    const a=document.getElementById("filterAuthor").value;
+    const c=document.getElementById("filterCat").value;
+    const from=document.getElementById("dateFrom").value;
+    const to  =document.getElementById("dateTo").value;
+    const f=from?new Date(from):null;
+    const t2=to?new Date(to+"T23:59:59"):null;
     return completedTasks.filter(function(t){
-      return (!a || t.author === a) && (!c || t.category === c);
+      if(a&&t.author!==a) return false;
+      if(c&&t.category!==c) return false;
+      if(t.completedAt&&t.completedAt.toDate){
+        const dd=t.completedAt.toDate();
+        if(f&&dd<f) return false;
+        if(t2&&dd>t2) return false;
+      }
+      return true;
     });
   }
 
-  // ── tabs / views ──────────────────────────────────────────────────────────
+  // ── tab switch ────────────────────────────────────────────────────────────
   function switchView(view){
-    document.querySelectorAll(".tab-btn").forEach(function(btn){
-      btn.classList.toggle("is-active", btn.dataset.view === view);
+    document.querySelectorAll(".tab-btn").forEach(function(b){
+      b.classList.toggle("is-active", b.dataset.view===view);
     });
-    document.getElementById("activeView").classList.toggle("is-active", view === "active");
-    document.getElementById("historyView").classList.toggle("is-active", view === "history");
-    document.getElementById("historyFilters").style.display = view === "history" ? "flex" : "none";
-    document.getElementById("statsRow").style.display       = view === "history" ? "flex" : "none";
+    document.getElementById("activeView").classList.toggle("is-active",  view==="active");
+    document.getElementById("historyView").classList.toggle("is-active", view==="history");
+    const isH = view==="history";
+    document.getElementById("historyControls").classList.toggle("is-visible", isH);
+    document.getElementById("statsRow").classList.toggle("is-visible", isH);
   }
 
-  document.querySelectorAll(".tab-btn").forEach(function(btn){
-    btn.addEventListener("click", function(){ switchView(btn.dataset.view); });
+  document.querySelectorAll(".tab-btn").forEach(function(b){
+    b.addEventListener("click", function(){ switchView(b.dataset.view); });
   });
-  document.getElementById("filterAuthor").addEventListener("change", renderHistory);
-  document.getElementById("filterCat").addEventListener("change",   renderHistory);
+  ["filterAuthor","filterCat","dateFrom","dateTo"].forEach(function(id){
+    document.getElementById(id).addEventListener("change", function(){
+      renderHistory();
+    });
+  });
+  document.getElementById("resetDates").addEventListener("click", function(){
+    document.getElementById("dateFrom").value="";
+    document.getElementById("dateTo").value="";
+    renderHistory();
+  });
 
-  // ── render active tasks ───────────────────────────────────────────────────
+  // ── render active ─────────────────────────────────────────────────────────
   function render(){
-    const body  = document.getElementById("ledgerBody");
-    const empty = document.getElementById("emptyState");
-    body.innerHTML = "";
-    empty.style.display = tasks.length ? "none" : "block";
+    const body=document.getElementById("ledgerBody");
+    const empty=document.getElementById("emptyState");
+    body.innerHTML="";
+    empty.style.display=tasks.length?"none":"block";
 
-    tasks.forEach(function(task, index){
-      const tr = document.createElement("tr");
-      const catColor = colorFor(CATEGORIES, task.category);
-      const prColor  = colorFor(PRIORITIES,  task.priority);
-      const stColor  = colorFor(STATUSES,    task.status);
+    tasks.forEach(function(task,index){
+      const tr=document.createElement("tr");
+      const cc=colorFor(CATEGORIES,task.category);
+      const pc=colorFor(PRIORITIES,task.priority);
+      const sc=colorFor(STATUSES,task.status);
+      const rb=task.returnCount>0
+        ? '<span class="returns-badge has-returns">'+task.returnCount+'</span>'
+        : '<span class="returns-badge">0</span>';
 
-      tr.innerHTML =
-        '<td class="col-num">' + String(index+1).padStart(3,"0") + '</td>' +
-        '<td class="col-date col-date-cell">' + formatDate(task.createdAt) + '</td>' +
-        '<td class="col-cat"><select class="tag-select cat-select" data-id="' + task.id + '" style="border-color:' + catColor + ';color:' + catColor + ';">' + optionsFor(CATEGORIES, task.category) + '</select></td>' +
-        '<td class="col-priority"><select class="tag-select priority-select" data-id="' + task.id + '" style="border-color:' + prColor + ';color:' + prColor + ';">' + optionsFor(PRIORITIES, task.priority) + '</select></td>' +
-        '<td class="col-status"><select class="tag-select status-select" data-id="' + task.id + '" style="border-color:' + stColor + ';color:' + stColor + ';">' + optionsFor(STATUSES, task.status) + '</select></td>' +
-        '<td class="col-text"><textarea class="text-input task-text" data-id="' + task.id + '" rows="1" placeholder="Что нужно сделать?">' + escapeHtml(task.text) + '</textarea></td>' +
-        '<td class="col-text"><textarea class="text-input task-result" data-id="' + task.id + '" rows="1" placeholder="Результат…">' + escapeHtml(task.result) + '</textarea></td>' +
-        '<td class="col-deadline"><input type="text" class="deadline-input task-deadline" data-id="' + task.id + '" value="' + escapeHtml(task.deadline) + '" placeholder="напр. до 30.06"></td>' +
-        '<td class="col-author"><select class="tag-select author-select" data-id="' + task.id + '" style="border-color:var(--ink-muted);color:var(--ink-muted);">' + optionsFor(AUTHORS, task.author) + '</select></td>' +
-        '<td class="col-action"><button class="del-btn" data-id="' + task.id + '" type="button" title="Завершить">✕</button></td>';
+      tr.innerHTML=
+        '<td class="col-num">'+String(index+1).padStart(3,"0")+'</td>'+
+        '<td class="col-date col-date-cell">'+fmtDate(task.createdAt)+'</td>'+
+        '<td class="col-cat"><select class="tag-select cat-select" data-id="'+task.id+'" style="border-color:'+cc+';color:'+cc+';">'+optionsFor(CATEGORIES,task.category)+'</select></td>'+
+        '<td class="col-priority"><select class="tag-select priority-select" data-id="'+task.id+'" style="border-color:'+pc+';color:'+pc+';">'+optionsFor(PRIORITIES,task.priority)+'</select></td>'+
+        '<td class="col-status"><select class="tag-select status-select" data-id="'+task.id+'" style="border-color:'+sc+';color:'+sc+';">'+optionsFor(STATUSES,task.status)+'</select></td>'+
+        '<td class="col-text"><textarea class="text-input task-text" data-id="'+task.id+'" rows="1" placeholder="Что нужно сделать?">'+esc(task.text)+'</textarea></td>'+
+        '<td class="col-text my-cell"><textarea class="text-input task-result" data-id="'+task.id+'" rows="1" placeholder="Результат…">'+esc(task.result)+'</textarea></td>'+
+        '<td class="col-deadline my-cell"><input type="text" class="deadline-input task-deadline" data-id="'+task.id+'" value="'+esc(task.deadline)+'" placeholder="напр. до 30.06"></td>'+
+        '<td class="col-author"><select class="tag-select author-select" data-id="'+task.id+'" style="border-color:var(--ink-muted);color:var(--ink-muted);">'+optionsFor(AUTHORS,task.author)+'</select></td>'+
+        '<td class="col-returns">'+rb+'</td>'+
+        '<td class="col-action"><button class="del-btn" data-id="'+task.id+'" type="button" title="Завершить">✕</button></td>';
 
       body.appendChild(tr);
     });
 
-    document.querySelectorAll(".task-text").forEach(autoGrow);
-    document.querySelectorAll(".task-result").forEach(autoGrow);
+    document.querySelectorAll(".task-text,.task-result").forEach(autoGrow);
     attachRowListeners();
 
     if(pendingFocusId){
-      const el = document.querySelector('.task-text[data-id="' + pendingFocusId + '"]');
+      const el=document.querySelector('.task-text[data-id="'+pendingFocusId+'"]');
       if(el) el.focus();
-      pendingFocusId = null;
+      pendingFocusId=null;
     }
   }
 
   // ── render history ────────────────────────────────────────────────────────
   function renderHistory(){
-    const body  = document.getElementById("historyBody");
-    const empty = document.getElementById("emptyHistoryState");
-    const list  = filteredHistory();
-    body.innerHTML = "";
-    empty.style.display = list.length ? "none" : "block";
+    const body=document.getElementById("historyBody");
+    const empty=document.getElementById("emptyHistoryState");
+    const list=filteredHistory();
+    body.innerHTML="";
+    empty.style.display=list.length?"none":"block";
+    updateStats(list);
 
-    updateStats(filteredHistory()); // статистика по отфильтрованным
+    list.forEach(function(task,index){
+      const tr=document.createElement("tr");
+      const cc=colorFor(CATEGORIES,task.category);
+      const pc=colorFor(PRIORITIES,task.priority);
+      const sc=colorFor(STATUSES,task.status);
+      const rb=task.returnCount>0
+        ? '<span class="returns-badge has-returns">'+task.returnCount+'</span>'
+        : '<span class="returns-badge">0</span>';
 
-    list.forEach(function(task, index){
-      const tr = document.createElement("tr");
-      const catColor = colorFor(CATEGORIES, task.category);
-      const prColor  = colorFor(PRIORITIES,  task.priority);
-      const stColor  = colorFor(STATUSES,    task.status);
-
-      tr.innerHTML =
-        '<td class="col-num">' + String(index+1).padStart(3,"0") + '</td>' +
-        '<td class="col-date col-date-cell">' + formatDate(task.createdAt) + '</td>' +
-        '<td class="col-cat"><span class="tag-badge" style="border-color:' + catColor + ';color:' + catColor + ';">' + escapeHtml(task.category) + '</span></td>' +
-        '<td class="col-priority"><span class="tag-badge" style="border-color:' + prColor + ';color:' + prColor + ';">' + escapeHtml(task.priority) + '</span></td>' +
-        '<td class="col-status"><span class="tag-badge" style="border-color:' + stColor + ';color:' + stColor + ';">' + escapeHtml(task.status) + '</span></td>' +
-        '<td class="col-text col-text-static">' + escapeHtml(task.text) + '</td>' +
-        '<td class="col-text col-text-static">' + escapeHtml(task.result) + '</td>' +
-        '<td class="col-deadline col-date-cell">' + escapeHtml(task.deadline) + '</td>' +
-        '<td class="col-author">' + escapeHtml(task.author) + '</td>' +
-        '<td class="col-completed">' + formatTimestamp(task.completedAt) + '</td>';
+      tr.innerHTML=
+        '<td class="col-num">'+String(index+1).padStart(3,"0")+'</td>'+
+        '<td class="col-date col-date-cell">'+fmtDate(task.createdAt)+'</td>'+
+        '<td class="col-cat"><span class="tag-badge" style="border-color:'+cc+';color:'+cc+';">'+esc(task.category)+'</span></td>'+
+        '<td class="col-priority"><span class="tag-badge" style="border-color:'+pc+';color:'+pc+';">'+esc(task.priority)+'</span></td>'+
+        '<td class="col-status"><span class="tag-badge" style="border-color:'+sc+';color:'+sc+';">'+esc(task.status)+'</span></td>'+
+        '<td class="col-text col-text-static">'+esc(task.text)+'</td>'+
+        '<td class="col-text col-text-static my-cell" style="background:var(--readonly-bg);">'+esc(task.result)+'</td>'+
+        '<td class="col-deadline col-date-cell my-cell" style="background:var(--readonly-bg);">'+esc(task.deadline)+'</td>'+
+        '<td class="col-author">'+esc(task.author)+'</td>'+
+        '<td class="col-returns">'+rb+'</td>'+
+        '<td class="col-completed">'+fmtTs(task.completedAt)+'</td>'+
+        '<td class="col-action"><button class="restore-btn" data-id="'+task.id+'" type="button" title="Вернуть в работу">↩</button></td>';
 
       body.appendChild(tr);
     });
+
+    attachHistoryListeners();
   }
 
-  // ── update & write ────────────────────────────────────────────────────────
+  // ── write helpers ─────────────────────────────────────────────────────────
   function updateField(id, field, value){
     if(!db) return;
-    const patch = {};
-    patch[field] = value;
-    db.collection(COLLECTION_NAME).doc(id).update(patch).catch(function(e){
-      console.error("Не удалось сохранить:", e);
-    });
+    const p={};p[field]=value;
+    db.collection(COLLECTION_NAME).doc(id).update(p).catch(function(e){console.error(e);});
   }
   function scheduleWrite(id, field, value){
-    const key = id + ":" + field;
+    const key=id+":"+field;
     if(pendingWrites[key]) clearTimeout(pendingWrites[key]);
-    pendingWrites[key] = setTimeout(function(){
-      updateField(id, field, value);
-      delete pendingWrites[key];
-    }, 500);
+    pendingWrites[key]=setTimeout(function(){
+      updateField(id,field,value); delete pendingWrites[key];
+    },500);
   }
 
+  // ── complete task ─────────────────────────────────────────────────────────
   function completeTask(id){
     if(!db) return;
-    const task = tasks.find(function(t){ return t.id === id; });
+    const task=tasks.find(function(t){return t.id===id;});
     if(!task) return;
     db.collection(HISTORY_COLLECTION_NAME).add({
       category:    task.category,
@@ -754,181 +674,191 @@
       result:      task.result,
       deadline:    task.deadline,
       author:      task.author,
-      createdAt:   task.createdAt || null,
+      createdAt:   task.createdAt||null,
+      returnCount: task.returnCount||0,
       completedAt: firebase.firestore.FieldValue.serverTimestamp()
     }).then(function(){
       return db.collection(COLLECTION_NAME).doc(id).delete();
-    }).catch(function(e){
-      console.error("Не удалось завершить задачу:", e);
-    });
+    }).catch(function(e){console.error(e);});
   }
 
-  // ── listeners ─────────────────────────────────────────────────────────────
+  // ── restore task ──────────────────────────────────────────────────────────
+  function restoreTask(id){
+    if(!db) return;
+    const task=completedTasks.find(function(t){return t.id===id;});
+    if(!task) return;
+    const prev=task.returnCount||0;
+    db.collection(COLLECTION_NAME).add({
+      category:    task.category,
+      priority:    task.priority,
+      status:      STATUSES[0],
+      text:        task.text,
+      result:      task.result,
+      deadline:    task.deadline,
+      author:      task.author,
+      createdAt:   task.createdAt||null,
+      returnCount: prev+1,
+      restoredAt:  firebase.firestore.FieldValue.serverTimestamp()
+    }).then(function(){
+      return db.collection(HISTORY_COLLECTION_NAME).doc(id).delete();
+    }).catch(function(e){console.error(e);});
+  }
+
+  // ── row listeners (active) ────────────────────────────────────────────────
   function attachRowListeners(){
     document.querySelectorAll(".cat-select").forEach(function(sel){
-      sel.addEventListener("change", function(e){
-        const id = e.target.dataset.id;
-        const task = tasks.find(function(t){ return t.id === id; });
-        if(task) task.category = e.target.value;
-        const color = colorFor(CATEGORIES, e.target.value);
-        e.target.style.borderColor = color; e.target.style.color = color;
-        updateField(id, "category", e.target.value);
+      sel.addEventListener("change",function(e){
+        const id=e.target.dataset.id;
+        const task=tasks.find(function(t){return t.id===id;});
+        if(task) task.category=e.target.value;
+        const col=colorFor(CATEGORIES,e.target.value);
+        e.target.style.borderColor=col; e.target.style.color=col;
+        updateField(id,"category",e.target.value);
       });
     });
     document.querySelectorAll(".priority-select").forEach(function(sel){
-      sel.addEventListener("change", function(e){
-        const id = e.target.dataset.id;
-        const task = tasks.find(function(t){ return t.id === id; });
-        if(task) task.priority = e.target.value;
-        const color = colorFor(PRIORITIES, e.target.value);
-        e.target.style.borderColor = color; e.target.style.color = color;
-        updateField(id, "priority", e.target.value);
+      sel.addEventListener("change",function(e){
+        const id=e.target.dataset.id;
+        const task=tasks.find(function(t){return t.id===id;});
+        if(task) task.priority=e.target.value;
+        const col=colorFor(PRIORITIES,e.target.value);
+        e.target.style.borderColor=col; e.target.style.color=col;
+        updateField(id,"priority",e.target.value);
       });
     });
     document.querySelectorAll(".status-select").forEach(function(sel){
-      sel.addEventListener("change", function(e){
-        const id = e.target.dataset.id;
-        const task = tasks.find(function(t){ return t.id === id; });
-        if(task) task.status = e.target.value;
-        const color = colorFor(STATUSES, e.target.value);
-        e.target.style.borderColor = color; e.target.style.color = color;
-        updateField(id, "status", e.target.value);
+      sel.addEventListener("change",function(e){
+        const id=e.target.dataset.id;
+        const task=tasks.find(function(t){return t.id===id;});
+        if(task) task.status=e.target.value;
+        const col=colorFor(STATUSES,e.target.value);
+        e.target.style.borderColor=col; e.target.style.color=col;
+        updateField(id,"status",e.target.value);
       });
     });
     document.querySelectorAll(".author-select").forEach(function(sel){
-      sel.addEventListener("change", function(e){
-        const id = e.target.dataset.id;
-        const task = tasks.find(function(t){ return t.id === id; });
-        if(task) task.author = e.target.value;
-        updateField(id, "author", e.target.value);
+      sel.addEventListener("change",function(e){
+        const id=e.target.dataset.id;
+        const task=tasks.find(function(t){return t.id===id;});
+        if(task) task.author=e.target.value;
+        updateField(id,"author",e.target.value);
       });
     });
     document.querySelectorAll(".task-text").forEach(function(inp){
-      inp.addEventListener("input", function(e){
-        const id = e.target.dataset.id;
-        const task = tasks.find(function(t){ return t.id === id; });
-        if(task) task.text = e.target.value;
-        autoGrow(e.target);
-        scheduleWrite(id, "text", e.target.value);
+      inp.addEventListener("input",function(e){
+        const id=e.target.dataset.id;
+        const task=tasks.find(function(t){return t.id===id;});
+        if(task) task.text=e.target.value;
+        autoGrow(e.target); scheduleWrite(id,"text",e.target.value);
       });
     });
     document.querySelectorAll(".task-result").forEach(function(inp){
-      inp.addEventListener("input", function(e){
-        const id = e.target.dataset.id;
-        const task = tasks.find(function(t){ return t.id === id; });
-        if(task) task.result = e.target.value;
-        autoGrow(e.target);
-        scheduleWrite(id, "result", e.target.value);
+      inp.addEventListener("input",function(e){
+        const id=e.target.dataset.id;
+        const task=tasks.find(function(t){return t.id===id;});
+        if(task) task.result=e.target.value;
+        autoGrow(e.target); scheduleWrite(id,"result",e.target.value);
       });
     });
     document.querySelectorAll(".task-deadline").forEach(function(inp){
-      inp.addEventListener("input", function(e){
-        const id = e.target.dataset.id;
-        const task = tasks.find(function(t){ return t.id === id; });
-        if(task) task.deadline = e.target.value;
-        scheduleWrite(id, "deadline", e.target.value);
+      inp.addEventListener("input",function(e){
+        const id=e.target.dataset.id;
+        const task=tasks.find(function(t){return t.id===id;});
+        if(task) task.deadline=e.target.value;
+        scheduleWrite(id,"deadline",e.target.value);
       });
     });
     document.querySelectorAll(".del-btn").forEach(function(btn){
-      btn.addEventListener("click", function(e){
-        completeTask(e.target.dataset.id);
-      });
+      btn.addEventListener("click",function(e){ completeTask(e.target.dataset.id); });
     });
   }
 
-  document.getElementById("addTaskBtn").addEventListener("click", function(){
-    if(!db){
-      alert("Сначала настройте Firebase. Подробности в generate_task_manager.py.");
-      return;
-    }
-    db.collection(COLLECTION_NAME).add({
-      category:  CATEGORIES[0],
-      priority:  PRIORITIES[0],
-      status:    STATUSES[0],
-      text:      "",
-      result:    "",
-      deadline:  "",
-      author:    AUTHORS[0],
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    }).then(function(ref){
-      pendingFocusId = ref.id;
-    }).catch(function(e){
-      console.error("Не удалось создать задачу:", e);
+  // ── row listeners (history restore) ──────────────────────────────────────
+  function attachHistoryListeners(){
+    document.querySelectorAll(".restore-btn").forEach(function(btn){
+      btn.addEventListener("click",function(e){ restoreTask(e.target.dataset.id); });
     });
+  }
+
+  // ── add task ──────────────────────────────────────────────────────────────
+  document.getElementById("addTaskBtn").addEventListener("click",function(){
+    if(!db){ alert("Сначала настройте Firebase."); return; }
+    db.collection(COLLECTION_NAME).add({
+      category:    CATEGORIES[0],
+      priority:    PRIORITIES[0],
+      status:      STATUSES[0],
+      text:        "",
+      result:      "",
+      deadline:    "",
+      author:      AUTHORS[0],
+      returnCount: 0,
+      createdAt:   firebase.firestore.FieldValue.serverTimestamp()
+    }).then(function(ref){ pendingFocusId=ref.id; })
+      .catch(function(e){console.error(e);});
   });
 
-  window.addEventListener("resize", function(){
-    document.querySelectorAll(".task-text, .task-result").forEach(autoGrow);
+  window.addEventListener("resize",function(){
+    document.querySelectorAll(".task-text,.task-result").forEach(autoGrow);
   });
 
   // ── init ──────────────────────────────────────────────────────────────────
   function init(){
     populateFilters();
-
-    if(isPlaceholderConfig()){
-      document.getElementById("configWarning").style.display = "block";
-      setSyncStatus("Не настроено", "is-error");
-      render(); renderHistory(); updateDoneCounter();
-      return;
+    if(isPlaceholder()){
+      document.getElementById("configWarning").style.display="block";
+      setSyncStatus("Не настроено","is-error");
+      render(); renderHistory(); updateDoneCounter(); return;
     }
     try{
       firebase.initializeApp(FIREBASE_CONFIG);
-      db = firebase.firestore();
+      db=firebase.firestore();
     }catch(e){
-      console.error("Firebase init error:", e);
-      setSyncStatus("Ошибка подключения к Firebase", "is-error");
-      return;
+      console.error(e); setSyncStatus("Ошибка подключения к Firebase","is-error"); return;
     }
 
-    db.collection(COLLECTION_NAME).orderBy("createdAt","asc").onSnapshot(function(snapshot){
-      tasks = snapshot.docs.map(function(doc){
-        const d = doc.data();
-        return {
-          id:        doc.id,
-          category:  d.category  || CATEGORIES[0],
-          priority:  d.priority  || PRIORITIES[0],
-          status:    d.status    || STATUSES[0],
-          text:      d.text      || "",
-          result:    d.result    || "",
-          deadline:  d.deadline  || "",
-          author:    d.author    || AUTHORS[0],
-          createdAt: d.createdAt || null
-        };
-      });
-      setSyncStatus("Синхронизировано — изменения видят все", "is-ok");
-      const active = document.activeElement;
-      const typing = active && (
-        active.classList.contains("task-text") ||
-        active.classList.contains("task-result") ||
-        active.classList.contains("task-deadline")
-      );
-      if(!typing) render();
-    }, function(error){
-      console.error("Firestore sync error:", error);
-      setSyncStatus("Нет доступа — проверьте правила Firestore (Rules)", "is-error");
-    });
-
-    db.collection(HISTORY_COLLECTION_NAME).orderBy("completedAt","desc").onSnapshot(function(snapshot){
-      completedTasks = snapshot.docs.map(function(doc){
-        const d = doc.data();
+    db.collection(COLLECTION_NAME).orderBy("createdAt","asc").onSnapshot(function(snap){
+      tasks=snap.docs.map(function(doc){
+        const d=doc.data();
         return {
           id:          doc.id,
-          category:    d.category  || CATEGORIES[0],
-          priority:    d.priority  || PRIORITIES[0],
-          status:      d.status    || STATUSES[0],
-          text:        d.text      || "",
-          result:      d.result    || "",
-          deadline:    d.deadline  || "",
-          author:      d.author    || AUTHORS[0],
+          category:    d.category    || CATEGORIES[0],
+          priority:    d.priority    || PRIORITIES[0],
+          status:      d.status      || STATUSES[0],
+          text:        d.text        || "",
+          result:      d.result      || "",
+          deadline:    d.deadline    || "",
+          author:      d.author      || AUTHORS[0],
+          returnCount: d.returnCount || 0,
+          createdAt:   d.createdAt   || null
+        };
+      });
+      setSyncStatus("Синхронизировано — изменения видят все","is-ok");
+      const ae=document.activeElement;
+      const typing=ae&&(ae.classList.contains("task-text")||ae.classList.contains("task-result")||ae.classList.contains("task-deadline"));
+      if(!typing) render();
+    },function(err){
+      console.error(err); setSyncStatus("Нет доступа — проверьте правила Firestore (Rules)","is-error");
+    });
+
+    db.collection(HISTORY_COLLECTION_NAME).orderBy("completedAt","desc").onSnapshot(function(snap){
+      completedTasks=snap.docs.map(function(doc){
+        const d=doc.data();
+        return {
+          id:          doc.id,
+          category:    d.category    || CATEGORIES[0],
+          priority:    d.priority    || PRIORITIES[0],
+          status:      d.status      || STATUSES[0],
+          text:        d.text        || "",
+          result:      d.result      || "",
+          deadline:    d.deadline    || "",
+          author:      d.author      || AUTHORS[0],
+          returnCount: d.returnCount || 0,
           createdAt:   d.createdAt   || null,
           completedAt: d.completedAt || null
         };
       });
-      updateDoneCounter();
-      renderHistory();
-    }, function(error){
-      console.error("Firestore history sync error:", error);
-    });
+      updateDoneCounter(); renderHistory();
+    },function(err){ console.error(err); });
   }
 
   init();
